@@ -14,7 +14,9 @@ public class CoreFeature {
 	public static		boolean						RENDERING_HAND									= false;
 
 	public static boolean isDebugContextEnabled() {
-		return FeatureConfig.CONFIG.coreDebugContextEnabled.get() == FeatureStatus.ENABLED;
+		return false;
+		// why this call leads to crash?
+		// return FeatureConfig.CONFIG.coreDebugContextEnabled.get() == FeatureStatus.ENABLED;
 	}
 
 	public static int getPooledBufferSetSize() {
