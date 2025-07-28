@@ -13,10 +13,10 @@ import static org.lwjgl.opengl.GL46.GL_SHADER_STORAGE_BUFFER;
 
 public class TransformProgramDispatcher {
 
-	public	static	final int				VERTEX_BUFFER_IN_INDEX	= 0;
-	public	static	final int				VARYING_BUFFER_INDEX	= 3;
-	private static	final int				GROUP_SIZE				= 128;
-	private static	final int				DISPATCH_COUNT_Y_Z		= 1;
+	public	static	final int				VERTEX_BUFFER_IN_INDEX		= 0;
+	public	static	final int				VARYING_BUFFER_IN_INDEX		= 3;
+	private static	final int				GROUP_SIZE					= 128;
+	private static	final int				DISPATCH_COUNT_Y_Z			= 1;
 
 	private			final ComputeProgram	program;
 	private			final Uniform			vertexCountUniform;
@@ -41,7 +41,7 @@ public class TransformProgramDispatcher {
 			if (vertexCount != 0) {
 
 				vertexBuffer		.bindBase			(GL_SHADER_STORAGE_BUFFER, VERTEX_BUFFER_IN_INDEX);
-				varyingBuffer		.bindBase			(GL_SHADER_STORAGE_BUFFER, VARYING_BUFFER_INDEX);
+				varyingBuffer		.bindBase			(GL_SHADER_STORAGE_BUFFER, VARYING_BUFFER_IN_INDEX);
 
 				vertexCountUniform	.uploadUnsignedInt	(vertexCount);
 				vertexOffsetUniform	.uploadUnsignedInt	((int) (vertexBuffer	.getOffset() / builder					.getVertexSize()));
@@ -67,7 +67,7 @@ public class TransformProgramDispatcher {
 			long							varyingOffset
 	) {
 		vertexBuffer		.bindBase			(GL_SHADER_STORAGE_BUFFER, VERTEX_BUFFER_IN_INDEX);
-		varyingBuffer		.bindBase			(GL_SHADER_STORAGE_BUFFER, VARYING_BUFFER_INDEX);
+		varyingBuffer		.bindBase			(GL_SHADER_STORAGE_BUFFER, VARYING_BUFFER_IN_INDEX);
 
 		vertexCountUniform	.uploadUnsignedInt	((int) vertexCount);
 		vertexOffsetUniform	.uploadUnsignedInt	((int) vertexOffset);

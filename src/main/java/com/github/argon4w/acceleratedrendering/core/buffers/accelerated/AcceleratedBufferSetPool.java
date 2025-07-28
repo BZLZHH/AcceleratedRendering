@@ -157,6 +157,7 @@ public class AcceleratedBufferSetPool extends LoopResetPool<AcceleratedBufferSet
 
 		public void prepare() {
 			vertexBuffer		.prepare();
+			varyingBuffer		.prepare();
 			elementBufferPool	.prepare();
 		}
 

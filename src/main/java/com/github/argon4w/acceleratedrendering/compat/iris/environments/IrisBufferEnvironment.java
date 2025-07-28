@@ -107,7 +107,6 @@ public class IrisBufferEnvironment implements IBufferEnvironment {
 				VertexFormat		irisVertexFormat,
 				ResourceLocation	meshUploadingProgramKey,
 				ResourceLocation	transformProgramKey
-
 		) {
 			this.vanillaVertexFormat			= vanillaVertexFormat;
 			this.irisVertexFormat				= irisVertexFormat;

@@ -25,7 +25,7 @@ Minecraft拥有一个羸弱的, 继承使用OpenGL立即模式的老版本的渲
 
 ## 🖥️硬件要求
 
-加速渲染因为使用了持久映射缓冲区(Persistently Mapped Buffer)和计算着色器, 因此需要OpenGL 4.4才能正常工作.
+加速渲染因为使用了持久映射缓冲区(Persistently Mapped Buffer)和计算着色器, 因此需要OpenGL 4.6才能正常工作.
 理论上NVIDIA GT 400 Series, Intel HD Graphics 520/530及以上的显卡可以满足这个要求.
 加速渲染已经在发布前在NVIDIA GTX 1660Ti Max-Q, NVIDIA RTX 3070Ti Laptop, NVIDIA RTX 4090 Laptop, RX 580, RX 5600XT上经过测试.
 移动设备目前**不受支持**.
@@ -33,6 +33,7 @@ Minecraft拥有一个羸弱的, 继承使用OpenGL立即模式的老版本的渲
 ## 🛠️配置
 配置文件可以在``<Minecraft安装位置>/.minecraft/config/acceleratedrendering-client.toml``找到. 你可以通过配置文件修改加速特性或在游戏内进行修改.
 部分特性可能需要重启游戏才能生效. 你可以在``模组 > Accelerated Rendering > 配置``找到游戏内配置编辑器.
+如要让加速物品渲染正常工作, 请在"核心配置" (Core Settings) 处开启"强制加速半透明" (Force Translucent Acceleration).
 
 <a id="english"></a>
 # AcceleratedRendering
@@ -66,7 +67,7 @@ for better compatibility.
 
 ## 🖥️Hardware Requirements
 
-AcceleratedRendering requires OpenGL 4.4 to work properly for the usage of persistently mapped buffers and compute shaders.
+AcceleratedRendering requires OpenGL 4.6 to work properly for the usage of persistently mapped buffers and compute shaders.
 Graphics cards like NVIDIA GT 400 Series and Intel HD Graphics 520/530 or newer will fit this requirement.
 This MOD has been tested on NVIDIA GTX 1660Ti Max-Q, NVIDIA RTX 3070Ti Laptop, NVIDIA RTX 4090 Laptop, RX 580, RX 5600XT.
 Mobile devices are **not currently supported**.
@@ -76,3 +77,4 @@ Mobile devices are **not currently supported**.
 Configuration file can be found in ``<your Minecraft>/.minecraft/config/acceleratedrendering-client.toml``. You can modify
 acceleration features in this file or in game (some specific configurations needs to restart the game to take effect).
 In game configuration editor can be found in ``Mods > Accelerated Rendering > Config``.
+"Force Translucent Acceleration" in "Core Settings" is required to be enabled in order that accelerated item rendering can work properly.

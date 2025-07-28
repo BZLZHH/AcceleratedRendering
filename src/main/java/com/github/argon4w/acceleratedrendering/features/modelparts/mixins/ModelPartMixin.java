@@ -5,6 +5,7 @@ import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.VertexConsumerExtension;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.renderers.IAcceleratedRenderer;
 import com.github.argon4w.acceleratedrendering.core.meshes.IMesh;
+import com.github.argon4w.acceleratedrendering.core.meshes.ServerMesh;
 import com.github.argon4w.acceleratedrendering.core.meshes.collectors.CulledMeshCollector;
 import com.github.argon4w.acceleratedrendering.features.entities.AcceleratedEntityRenderingFeature;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -123,10 +124,7 @@ public class ModelPartMixin implements IAcceleratedRenderer<Void> {
 
 		culledMeshCollector.flush();
 
-		mesh = AcceleratedEntityRenderingFeature
-				.getMeshType()
-				.getBuilder	()
-				.build		(culledMeshCollector);
+		mesh = ServerMesh.Builder.INSTANCE.build(culledMeshCollector, (ModelPart) (Object) this, vertexConsumer);
 
 		meshes	.put	(extension, mesh);
 		mesh	.write	(

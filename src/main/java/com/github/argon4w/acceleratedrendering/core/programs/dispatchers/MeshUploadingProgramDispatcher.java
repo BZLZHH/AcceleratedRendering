@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import static org.lwjgl.opengl.GL43.GL_SHADER_STORAGE_BUFFER;
+import static org.lwjgl.opengl.GL46.GL_SHADER_STORAGE_BUFFER;
 
 public class MeshUploadingProgramDispatcher {
 
