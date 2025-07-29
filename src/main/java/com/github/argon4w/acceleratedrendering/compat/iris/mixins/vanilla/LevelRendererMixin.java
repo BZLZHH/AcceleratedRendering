@@ -23,10 +23,22 @@ public class LevelRendererMixin {
 
 	@Inject(
 			method	= "renderLevel",
-			at		= @At(
-					value	= "CONSTANT",
-					args	= "stringValue=translucent"
-			)
+			at		= {
+					@At(
+							value	= "INVOKE",
+							target	= "Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;endBatch()V",
+							ordinal = 1
+					),
+					@At(
+							value	= "INVOKE",
+							target	= "Lnet/minecraft/client/renderer/MultiBufferSource$BufferSource;endBatch()V",
+							ordinal = 2
+					),
+					@At(
+							value	= "CONSTANT",
+							args	= "stringValue=translucent"
+					)
+			}
 	)
 	public void drawIrisCoreBuffers(
 			DeltaTracker	pDeltaTracker,
