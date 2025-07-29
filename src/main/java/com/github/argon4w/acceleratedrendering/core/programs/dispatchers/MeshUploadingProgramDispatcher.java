@@ -174,7 +174,9 @@ public class MeshUploadingProgramDispatcher {
 			}
 		}
 
-		program.resetProgram();
-		program.waitBarriers(transformProgramDispatcher.getBarrierFlags());
+		if (!denseUploaders.isEmpty()) {
+			program.resetProgram();
+			program.waitBarriers();
+		}
 	}
 }

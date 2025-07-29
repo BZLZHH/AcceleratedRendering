@@ -3,6 +3,8 @@ package com.github.argon4w.acceleratedrendering.core.buffers.accelerated;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.AcceleratedBufferBuilder;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.DrawContextPool;
 import com.github.argon4w.acceleratedrendering.core.buffers.environments.IBufferEnvironment;
+import com.github.argon4w.acceleratedrendering.core.meshes.ServerMesh;
+import com.github.argon4w.acceleratedrendering.core.programs.dispatchers.MeshUploadingProgramDispatcher;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferUploader;
 import com.mojang.blaze3d.vertex.VertexConsumer;
@@ -64,8 +66,8 @@ public class AcceleratedBufferSource extends MultiBufferSource.BufferSource impl
 
 	@Override
 	public VertexConsumer getBuffer(RenderType renderType) {
-		var builders	= currentBufferSet	.getBuilders();
-		var builder		= builders			.get		(renderType);
+		var builders	= currentBufferSet	.getBuilders		();
+		var builder		= builders			.getAndMoveToLast	(renderType);
 
 		if (builder != null) {
 			return builder;
@@ -114,8 +116,9 @@ public class AcceleratedBufferSource extends MultiBufferSource.BufferSource impl
 				continue;
 			}
 
-			bufferEnvironment.selectMeshUploadingProgramDispatcher	().dispatch(builders.values(), bufferSet);
-			bufferEnvironment.selectTransformProgramDispatcher		().dispatch(builders.values());
+			ServerMesh.Builder.INSTANCE	.getBuffer								(bufferEnvironment.getLayout())	.bindBase(GL_SHADER_STORAGE_BUFFER,	MeshUploadingProgramDispatcher.SMALL_MESH_BUFFER_INDEX);
+			bufferEnvironment			.selectMeshUploadingProgramDispatcher	()								.dispatch(builders.values(),		bufferSet);
+			bufferEnvironment			.selectTransformProgramDispatcher		()								.dispatch(builders.values());
 
 			for (var renderType : builders.keySet()) {
 				var builder			= builders	.get				(renderType);

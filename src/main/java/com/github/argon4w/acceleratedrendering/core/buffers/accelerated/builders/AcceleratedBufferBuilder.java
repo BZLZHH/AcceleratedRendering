@@ -367,13 +367,13 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 		VARYING_MESH		.putInt(varyingAddress,		-1);
 		VARYING_SHOULD_CULL	.putInt(varyingAddress,		cullingProgramDispatcher.shouldCull() ? 1 : 0);
 
-		for (int i = 0; i < size; i++) {
+		for (var i = 0; i < size; i++) {
 			VARYING_OFFSET
 					.at		(i)
 					.putInt	(varyingAddress, i);
 		}
 
-		elementSegment	.countElements	(mode.indexCount(size));
+		elementSegment.countElements(mode.indexCount(size));
 		vertexCount += size;
 	}
 
@@ -384,6 +384,31 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 			int			light,
 			int			overlay
 	) {
+		if (CoreFeature.shouldUploadMeshImmediately()) {
+			var meshSize		= serverMesh				.size		();
+			var vertexAddress	= vertexBuffer				.reserve	(vertexSize		* meshSize);
+			var varyingAddress	= varyingBuffer				.reserve	(VARYING_SIZE	* meshSize);
+
+			colorOffset			.putInt(vertexAddress,	FastColor.ABGR32.fromArgb32(color));
+			uv1Offset			.putInt(vertexAddress,	overlay);
+			uv2Offset			.putInt(vertexAddress,	light);
+
+			VARYING_SHARING		.putInt(varyingAddress,	activeSharing);
+			VARYING_MESH		.putInt(varyingAddress,	(int) serverMesh		.offset		());
+			VARYING_SHOULD_CULL	.putInt(varyingAddress,	cullingProgramDispatcher.shouldCull	() ? 1 : 0);
+
+			for (var i = 0; i < meshSize; i++) {
+				VARYING_OFFSET
+						.at		(i)
+						.putInt	(varyingAddress, i);
+			}
+
+			elementSegment.countElements(mode.indexCount((int) meshSize));
+			vertexCount += (int) meshSize;
+
+			return;
+		}
+
 		var meshSize		= (int) serverMesh	.size	();
 		var meshUploader	= meshUploaders		.get	(serverMesh);
 		meshVertexCount		= meshVertexCount + meshSize;

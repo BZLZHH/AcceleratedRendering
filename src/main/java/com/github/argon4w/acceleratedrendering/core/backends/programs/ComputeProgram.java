@@ -51,10 +51,6 @@ public class ComputeProgram {
 		glMemoryBarrier(barrierFlags);
 	}
 
-	public void waitBarriers(int additional) {
-		glMemoryBarrier(barrierFlags | additional);
-	}
-
 	public int getUniformLocation(String name) {
 		return glGetUniformLocation(programHandle, name);
 	}

@@ -7,6 +7,7 @@ import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.El
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.StagingBufferPool;
 import com.github.argon4w.acceleratedrendering.core.buffers.memory.IMemoryInterface;
 import com.github.argon4w.acceleratedrendering.core.buffers.memory.IMemoryLayout;
+import com.github.argon4w.acceleratedrendering.core.meshes.ServerMesh;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormatElement;
@@ -51,7 +52,7 @@ public class AcceleratedBufferBuilderMixin implements IIrisAcceleratedBufferBuil
 			method	= "addVertex(FFFIFFIIFFF)V",
 			at		= @At("TAIL")
 	)
-	public void addVertex(
+	public void addIrisVertex(
 			float								pX,
 			float								pY,
 			float								pZ,
@@ -73,11 +74,27 @@ public class AcceleratedBufferBuilderMixin implements IIrisAcceleratedBufferBuil
 			method	= "addVertex(FFF)Lcom/mojang/blaze3d/vertex/VertexConsumer;",
 			at		= @At("TAIL")
 	)
-	public void addVertex(
+	public void addIrisVertex(
 			float									pX,
 			float									pY,
 			float 									pZ,
 			CallbackInfoReturnable<VertexConsumer>	cir) {
+		addIrisData(vertexAddress);
+	}
+
+	@Inject(
+			method	= {
+					"addServerMesh",
+					"addClientMesh"
+			},
+			at		= @At(
+					value	= "INVOKE",
+					target	= "Lcom/github/argon4w/acceleratedrendering/core/buffers/memory/IMemoryInterface;putInt(JI)V",
+					ordinal	= 2,
+					shift	= At.Shift.AFTER
+			)
+	)
+	public void addIrisMesh(CallbackInfo ci, @Local(name = "vertexAddress") long vertexAddress) {
 		addIrisData(vertexAddress);
 	}
 

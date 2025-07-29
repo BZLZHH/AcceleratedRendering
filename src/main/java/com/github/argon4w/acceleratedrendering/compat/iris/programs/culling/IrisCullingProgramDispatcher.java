@@ -55,7 +55,6 @@ public class IrisCullingProgramDispatcher implements ICullingProgramDispatcher {
 				DISPATCH_COUNT_Y_Z,
 				DISPATCH_COUNT_Y_Z
 		);
-		program.resetProgram();
 
 		return program.getBarrierFlags();
 	}

@@ -81,7 +81,7 @@ public class TransformProgramDispatcher {
 		);
 	}
 
-	public int getBarrierFlags() {
-		return program.getBarrierFlags();
+	public void waitBarriers() {
+		program.waitBarriers();
 	}
 }

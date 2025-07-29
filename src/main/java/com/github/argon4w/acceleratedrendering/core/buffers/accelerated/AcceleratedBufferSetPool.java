@@ -73,25 +73,25 @@ public class AcceleratedBufferSetPool extends LoopResetPool<AcceleratedBufferSet
 
 	public static class BufferSet {
 
-		public static	final	int											VERTEX_BUFFER_OUT_INDEX		= 1;
-		public static	final	int											SHARING_BUFFER_INDEX		= 2;
-		public static	final	int											VARYING_BUFFER_OUT_INDEX	= 4;
-		public static	final	int											ELEMENT_BUFFER_INDEX		= 6;
+		public static	final	int																		VERTEX_BUFFER_OUT_INDEX		= 1;
+		public static	final	int																		SHARING_BUFFER_INDEX		= 2;
+		public static	final	int																		VARYING_BUFFER_OUT_INDEX	= 4;
+		public static	final	int																		ELEMENT_BUFFER_INDEX		= 6;
 
-		private			final	MeshUploaderPool							meshUploaderPool;
-		private			final 	DrawContextPool								drawContextPool;
-		private			final 	ElementBufferPool							elementBufferPool;
-		private			final 	MappedBuffer								sharingBuffer;
-		private			final 	StagingBufferPool							varyingBuffer;
-		private			final	StagingBufferPool							vertexBuffer;
-		private			final 	VertexArray									vertexArray;
-		private			final 	Sync										sync;
-		private			final 	MutableInt									sharing;
-		@Getter	private	final	Map<RenderType, AcceleratedBufferBuilder>	builders;
-		@Getter private	final	IBufferEnvironment							bufferEnvironment;
+		private			final	MeshUploaderPool														meshUploaderPool;
+		private			final 	DrawContextPool															drawContextPool;
+		private			final 	ElementBufferPool														elementBufferPool;
+		private			final 	MappedBuffer															sharingBuffer;
+		private			final 	StagingBufferPool														varyingBuffer;
+		private			final	StagingBufferPool														vertexBuffer;
+		private			final 	VertexArray																vertexArray;
+		private			final 	Sync																	sync;
+		private			final 	MutableInt																sharing;
+		@Getter	private	final	Object2ObjectLinkedOpenHashMap<RenderType, AcceleratedBufferBuilder>	builders;
+		@Getter private	final	IBufferEnvironment														bufferEnvironment;
 
-		private 				boolean										used;
-		private 				IMemoryLayout<VertexFormatElement>			layout;
+		private 				boolean																	used;
+		private 				IMemoryLayout<VertexFormatElement>										layout;
 
 		public BufferSet(IBufferEnvironment bufferEnvironment) {
 			var size				= CoreFeature.getPooledElementBufferSize();

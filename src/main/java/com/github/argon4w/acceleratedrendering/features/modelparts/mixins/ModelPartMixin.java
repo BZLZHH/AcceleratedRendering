@@ -124,7 +124,10 @@ public class ModelPartMixin implements IAcceleratedRenderer<Void> {
 
 		culledMeshCollector.flush();
 
-		mesh = ServerMesh.Builder.INSTANCE.build(culledMeshCollector, (ModelPart) (Object) this, vertexConsumer);
+		mesh = AcceleratedEntityRenderingFeature
+				.getMeshType()
+				.getBuilder	()
+				.build		(culledMeshCollector);
 
 		meshes	.put	(extension, mesh);
 		mesh	.write	(

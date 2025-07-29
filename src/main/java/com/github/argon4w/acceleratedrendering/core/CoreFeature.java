@@ -43,6 +43,10 @@ public class CoreFeature {
 		return FeatureConfig.CONFIG.coreMeshInfoCacheType.get();
 	}
 
+	public static boolean shouldUploadMeshImmediately() {
+		return FeatureConfig.CONFIG.coreUploadMeshImmediately.get() == FeatureStatus.ENABLED;
+	}
+
 	public static void disableForceTranslucentAcceleration() {
 		FORCE_TRANSLUCENT_ACCELERATION_CONTROLLER_STACK.push(FeatureStatus.DISABLED);
 	}
