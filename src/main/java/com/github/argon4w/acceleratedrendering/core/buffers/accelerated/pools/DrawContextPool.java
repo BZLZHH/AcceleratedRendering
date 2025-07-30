@@ -80,7 +80,6 @@ public class DrawContextPool extends SimpleResetPool<DrawContextPool.IndirectDra
                 		commandOffset
         		);
 
-        		glEnable(GL_CULL_FACE);
     		}
 	}
 }
