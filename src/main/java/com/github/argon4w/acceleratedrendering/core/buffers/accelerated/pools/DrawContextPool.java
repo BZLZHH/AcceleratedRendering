@@ -62,26 +62,25 @@ public class DrawContextPool extends SimpleResetPool<DrawContextPool.IndirectDra
 			INDIRECT_BASE_INSTANCE				.putInt	(address, 0);
 		}
 
-		public void bindComputeBuffers(ElementBufferPool.ElementSegment elementSegmentIn) {
-			var elementOffset		= elementSegmentIn	.getOffset	();
-			var commandAddress		= context			.addressAt	(commandOffset);
-
-			INDIRECT_COUNT		.putInt		(commandAddress,	0);
-			INDIRECT_FIRST_INDEX.putInt		(commandAddress,	(int) elementOffset / 4);
-			context				.bindRange	(
-					GL_ATOMIC_COUNTER_BUFFER,
-					ELEMENT_COUNT_INDEX,
-					commandOffset,
-					4
-			);
+		public void bindComputeBuffers(ElementBufferPool.ElementSegment elementSegment) {
+			int count = (int) (elementSegment.getBytes() / Integer.BYTES);
+			long elementOffset = elementSegment.getOffset();
+			long commandAddress = context.addressAt(commandOffset);
+		
+			INDIRECT_COUNT.putInt(commandAddress, count);
+			INDIRECT_FIRST_INDEX.putInt(commandAddress, (int) (elementOffset / Integer.BYTES));
 		}
 
 		public void drawElements(VertexFormat.Mode mode) {
-			glDrawElementsIndirect(
-					mode.asGLMode,
-					GL_UNSIGNED_INT,
-					commandOffset
-			);
-		}
+        		glDisable(GL_CULL_FACE);
+
+        		glDrawElementsIndirect(
+                		mode.asGLMode,
+                		GL_UNSIGNED_INT,
+                		commandOffset
+        		);
+
+        		glEnable(GL_CULL_FACE);
+    		}
 	}
 }
