@@ -80,8 +80,4 @@ public class TransformProgramDispatcher {
 				DISPATCH_COUNT_Y_Z
 		);
 	}
-
-	public void waitBarriers() {
-		program.waitBarriers();
-	}
 }

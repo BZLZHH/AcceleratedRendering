@@ -56,11 +56,11 @@ public class BakedGlyphMixin {
 					null,
 					pPackedLight,
 					OverlayTexture	.NO_OVERLAY,
-					FastColor.ABGR32.color(
+					FastColor.ARGB32.color(
 							(int) (pAlpha	* 255.0F),
-							(int) (pBlue	* 255.0F),
+							(int) (pRed		* 255.0F),
 							(int) (pGreen	* 255.0F),
-							(int) (pRed		* 255.0F)
+							(int) (pBlue	* 255.0F)
 					)
 			);
 		}
