@@ -1,14 +1,18 @@
 package com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders;
 
+import com.github.argon4w.acceleratedrendering.core.meshes.ServerMesh;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.ExtensionMethod;
 
-@ExtensionMethod	(VertexConsumerExtension.class)
+import java.nio.ByteBuffer;
+
+
 @AllArgsConstructor
 @EqualsAndHashCode	(callSuper = false)
+@ExtensionMethod	(VertexConsumerExtension.class)
 public class AcceleratedEntityOutlineGenerator extends AcceleratedVertexConsumerWrapper {
 
 	private final VertexConsumer	delegate;
@@ -27,6 +31,42 @@ public class AcceleratedEntityOutlineGenerator extends AcceleratedVertexConsumer
 						.decorate		(buffer),
 				color
 		);
+	}
+
+	@Override
+	public void addClientMesh(
+			ByteBuffer meshBuffer,
+			int			size,
+			int			color,
+			int			light,
+			int			overlay
+	) {
+		getDelegate				()
+				.getAccelerated	()
+				.addClientMesh	(
+						meshBuffer,
+						size,
+						this.color,
+						light,
+						overlay
+				);
+	}
+
+	@Override
+	public void addServerMesh(
+			ServerMesh serverMesh,
+			int			color,
+			int			light,
+			int			overlay
+	) {
+		getDelegate				()
+				.getAccelerated	()
+				.addServerMesh	(
+						serverMesh,
+						this.color,
+						light,
+						overlay
+				);
 	}
 
 	@Override
@@ -96,5 +136,34 @@ public class AcceleratedEntityOutlineGenerator extends AcceleratedVertexConsumer
 			float			pNormalZ
 	) {
 		return this;
+	}
+
+	@Override
+	public void addVertex(
+			float	x,
+			float	y,
+			float	z,
+			int		color,
+			float	u,
+			float	v,
+			int		packedOverlay,
+			int		packedLight,
+			float	normalX,
+			float	normalY,
+			float	normalZ
+	) {
+		getDelegate().addVertex(
+				x,
+				y,
+				z,
+				this.color,
+				u,
+				v,
+				packedOverlay,
+				packedLight,
+				normalX,
+				normalY,
+				normalZ
+		);
 	}
 }

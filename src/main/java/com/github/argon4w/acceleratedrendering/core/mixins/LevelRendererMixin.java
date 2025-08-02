@@ -1,12 +1,10 @@
 package com.github.argon4w.acceleratedrendering.core.mixins;
 
-import com.github.argon4w.acceleratedrendering.compat.iris.IrisCompatBuffers;
 import com.github.argon4w.acceleratedrendering.core.CoreBuffers;
 import com.github.argon4w.acceleratedrendering.core.CoreFeature;
 import com.github.argon4w.acceleratedrendering.core.meshes.ClientMesh;
 import com.github.argon4w.acceleratedrendering.core.meshes.ServerMesh;
 import com.github.argon4w.acceleratedrendering.core.programs.ComputeShaderProgramLoader;
-import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.Camera;
@@ -27,8 +25,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 )
 public class LevelRendererMixin {
 
-	@WrapMethod(method = "renderLevel")
-	public void wrapRenderLevel(
+	@Inject(
+			method	= "renderLevel",
+			at		= @At("HEAD")
+	)
+	public void startRenderLevel(
 			DeltaTracker	deltaTracker,
 			boolean			renderBlockOutline,
 			Camera			camera,
@@ -36,19 +37,26 @@ public class LevelRendererMixin {
 			LightTexture	lightTexture,
 			Matrix4f		frustumMatrix,
 			Matrix4f		projectionMatrix,
-			Operation<Void>	original
+			CallbackInfo	ci
 	) {
-		CoreFeature	.setRenderingLevel	();
-		original	.call				(
-				deltaTracker,
-				renderBlockOutline,
-				camera,
-				gameRenderer,
-				lightTexture,
-				frustumMatrix,
-				projectionMatrix
-		);
-		CoreFeature	.resetRenderingLevel();
+		CoreFeature.setRenderingLevel();
+	}
+
+	@Inject(
+			method	= "renderLevel",
+			at		= @At("TAIL")
+	)
+	public void stopRenderLevel(
+			DeltaTracker	deltaTracker,
+			boolean			renderBlockOutline,
+			Camera			camera,
+			GameRenderer	gameRenderer,
+			LightTexture	lightTexture,
+			Matrix4f		frustumMatrix,
+			Matrix4f		projectionMatrix,
+			CallbackInfo	ci
+	) {
+		CoreFeature.resetRenderingLevel();
 	}
 
 	@Inject(
@@ -103,11 +111,5 @@ public class LevelRendererMixin {
 		ComputeShaderProgramLoader		.delete();
 		ServerMesh.Builder.INSTANCE		.delete();
 		ClientMesh.Builder.INSTANCE		.delete();
-
-		IrisCompatBuffers.BLOCK_SHADOW			.delete();
-		IrisCompatBuffers.ENTITY_SHADOW			.delete();
-		IrisCompatBuffers.GLYPH_SHADOW			.delete();
-		IrisCompatBuffers.POS_TEX_SHADOW		.delete();
-		IrisCompatBuffers.POS_TEX_COLOR_SHADOW	.delete();
 	}
 }

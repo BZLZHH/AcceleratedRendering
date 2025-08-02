@@ -18,8 +18,6 @@ import lombok.Getter;
 import net.minecraft.client.renderer.RenderType;
 import org.apache.commons.lang3.mutable.MutableInt;
 
-import java.util.Map;
-
 import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL40.GL_DRAW_INDIRECT_BUFFER;
 import static org.lwjgl.opengl.GL46.GL_ARRAY_BUFFER;

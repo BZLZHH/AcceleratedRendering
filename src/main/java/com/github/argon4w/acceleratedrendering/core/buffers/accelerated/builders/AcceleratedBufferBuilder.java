@@ -69,6 +69,7 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 	private										long											sharingAddress;
 	private										int												activeSharing;
 	private										int												cachedSharing;
+	@Getter private		 						boolean											outdated;
 
 	private										Matrix4f										cachedTransform;
 	private										Matrix3f										cachedNormal;
@@ -476,5 +477,9 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 
 	public boolean isEmpty() {
 		return getTotalVertexCount() == 0;
+	}
+
+	public void setOutdated() {
+		outdated = true;
 	}
 }

@@ -1,5 +1,6 @@
 package com.github.argon4w.acceleratedrendering.compat.iris.mixins.vanilla;
 
+import com.github.argon4w.acceleratedrendering.compat.iris.IrisCompatBuffers;
 import com.github.argon4w.acceleratedrendering.core.CoreBuffers;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -67,5 +68,17 @@ public class LevelRendererMixin {
 	)
 	public void preventDrawCoreBuffers(MultiBufferSource.BufferSource instance, Operation<Void> original) {
 		instance.endLastBatch();
+	}
+
+	@Inject(
+			method	= "close",
+			at		= @At("TAIL")
+	)
+	public void deleteIrisBuffers(CallbackInfo ci) {
+		IrisCompatBuffers.BLOCK_SHADOW			.delete();
+		IrisCompatBuffers.ENTITY_SHADOW			.delete();
+		IrisCompatBuffers.GLYPH_SHADOW			.delete();
+		IrisCompatBuffers.POS_TEX_SHADOW		.delete();
+		IrisCompatBuffers.POS_TEX_COLOR_SHADOW	.delete();
 	}
 }

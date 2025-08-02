@@ -8,11 +8,9 @@ import com.github.argon4w.acceleratedrendering.core.backends.buffers.MappedBuffe
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.IAcceleratedVertexConsumer;
 import com.github.argon4w.acceleratedrendering.core.buffers.memory.IMemoryLayout;
 import com.github.argon4w.acceleratedrendering.core.meshes.collectors.IMeshCollector;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormatElement;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ReferenceArrayList;
-import net.minecraft.client.model.geom.ModelPart;
 import org.lwjgl.system.MemoryUtil;
 
 import java.util.Map;

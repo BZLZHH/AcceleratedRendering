@@ -38,7 +38,7 @@ public class CoreBuffers {
 			.invalid("energy_swirl")
 			.build	();
 
-	public static AcceleratedBufferSources getCoreBufferSourceSet() {
+	public static AcceleratedBufferSources getCoreBufferSources() {
 		return CORE;
 	}
 }

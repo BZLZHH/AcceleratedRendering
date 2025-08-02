@@ -7,11 +7,10 @@ import com.github.argon4w.acceleratedrendering.core.meshes.ServerMesh;
 import com.github.argon4w.acceleratedrendering.core.programs.dispatchers.MeshUploadingProgramDispatcher;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.BufferUploader;
-import com.mojang.blaze3d.vertex.VertexConsumer;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectLinkedOpenHashSet;
+import lombok.Getter;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 
 import java.util.Map;
@@ -19,19 +18,17 @@ import java.util.Set;
 
 import static org.lwjgl.opengl.GL46.*;
 
-public class AcceleratedBufferSource extends MultiBufferSource.BufferSource implements IAcceleratedBufferSource {
+public class AcceleratedBufferSource implements IAcceleratedBufferSource {
 
-	private final	IBufferEnvironment										bufferEnvironment;
-	private final	Map<RenderType, DrawContextPool.IndirectDrawContext>	drawContexts;
-	private final	AcceleratedBufferSetPool								acceleratedBufferSetPool;
-	private final	Set<AcceleratedBufferSetPool.BufferSet>					bufferSets;
+	@Getter private	final	IBufferEnvironment										bufferEnvironment;
+	private			final	Map<RenderType, DrawContextPool.IndirectDrawContext>	drawContexts;
+	private			final	AcceleratedBufferSetPool								acceleratedBufferSetPool;
+	private			final	Set<AcceleratedBufferSetPool.BufferSet>					bufferSets;
 
-	private			AcceleratedBufferSetPool.BufferSet						currentBufferSet;
-	private 		boolean													used;
+	private					AcceleratedBufferSetPool.BufferSet						currentBufferSet;
+	private 				boolean													used;
 
 	public AcceleratedBufferSource(IBufferEnvironment bufferEnvironment) {
-		super(null, null);
-
 		this.bufferEnvironment			= bufferEnvironment;
 		this.drawContexts				= new Object2ObjectLinkedOpenHashMap<>	();
 		this.acceleratedBufferSetPool	= new AcceleratedBufferSetPool			(this.bufferEnvironment);
@@ -45,27 +42,7 @@ public class AcceleratedBufferSource extends MultiBufferSource.BufferSource impl
 	}
 
 	@Override
-	public void endLastBatch() {
-
-	}
-
-	@Override
-	public void endBatch() {
-
-	}
-
-	@Override
-	public void endBatch(RenderType pRenderType) {
-
-	}
-
-	@Override
-	public IBufferEnvironment getBufferEnvironment() {
-		return bufferEnvironment;
-	}
-
-	@Override
-	public VertexConsumer getBuffer(RenderType renderType) {
+	public AcceleratedBufferBuilder getBuffer(RenderType renderType) {
 		var builders	= currentBufferSet	.getBuilders		();
 		var builder		= builders			.getAndMoveToLast	(renderType);
 
@@ -101,7 +78,6 @@ public class AcceleratedBufferSource extends MultiBufferSource.BufferSource impl
 		return builder;
 	}
 
-	@Override
 	public void drawBuffers() {
 		if (!used) {
 			return;
@@ -131,6 +107,7 @@ public class AcceleratedBufferSource extends MultiBufferSource.BufferSource impl
 				var mode		= renderType.mode;
 				var drawContext	= bufferSet	.getDrawContext();
 
+				builder			.setOutdated		();
 				elementSegment	.allocateOffset		();
 				bufferSet		.bindElementBuffer	(elementSegment);
 				drawContext		.bindComputeBuffers	(elementSegment);

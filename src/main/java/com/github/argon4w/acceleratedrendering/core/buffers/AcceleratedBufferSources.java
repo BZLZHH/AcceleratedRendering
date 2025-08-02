@@ -1,9 +1,9 @@
 package com.github.argon4w.acceleratedrendering.core.buffers;
 
 import com.github.argon4w.acceleratedrendering.core.CoreFeature;
+import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.AcceleratedBufferSource;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.IAcceleratedBufferSource;
-import com.google.common.collect.Maps;
-import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.AcceleratedBufferBuilder;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectOpenHashSet;
@@ -12,17 +12,16 @@ import net.minecraft.client.renderer.RenderType;
 
 import java.util.Map;
 import java.util.Set;
-import java.util.function.Function;
 
-public class AcceleratedBufferSources implements Function<RenderType, VertexConsumer> {
+public class AcceleratedBufferSources implements IAcceleratedBufferSource {
 
-	private			final	Map<VertexFormat, IAcceleratedBufferSource>	sources;
+	private			final	Map<VertexFormat, AcceleratedBufferSource>	sources;
 	private			final	Set<VertexFormat.Mode>						validModes;
 	private			final	Set<String>									invalidNames;
 	private			final	boolean										canSort;
 
 	private AcceleratedBufferSources(
-			Map<VertexFormat, IAcceleratedBufferSource>	sources,
+			Map<VertexFormat, AcceleratedBufferSource>	sources,
 			Set<VertexFormat.Mode>						validModes,
 			Set<String>									invalidNames,
 			boolean										canSort
@@ -34,7 +33,7 @@ public class AcceleratedBufferSources implements Function<RenderType, VertexCons
 	}
 
 	@Override
-	public VertexConsumer apply(RenderType pRenderType) {
+	public AcceleratedBufferBuilder getBuffer(RenderType pRenderType) {
 		if (			pRenderType		!= null
 				&& (	CoreFeature		.shouldForceAccelerateTranslucent	() || canSort || !pRenderType.sortOnUpload)
 				&&		validModes		.contains							(pRenderType.mode)
@@ -55,7 +54,7 @@ public class AcceleratedBufferSources implements Function<RenderType, VertexCons
 
 	public static class Builder {
 
-		private final	Map<VertexFormat, IAcceleratedBufferSource>	sources;
+		private final	Map<VertexFormat, AcceleratedBufferSource>	sources;
 		private final	Set<VertexFormat.Mode>						validModes;
 		private final	Set<String>									invalidNames;
 
@@ -69,13 +68,12 @@ public class AcceleratedBufferSources implements Function<RenderType, VertexCons
 			this.canSort		= false;
 		}
 
-		public Builder source(IAcceleratedBufferSource bufferSource) {
-			sources.putAll(Maps.asMap(
-					bufferSource
-							.getBufferEnvironment	()
-							.getVertexFormats		(),
-					$ -> bufferSource
-			));
+		public Builder source(AcceleratedBufferSource bufferSource) {
+			bufferSource
+					.getBufferEnvironment	()
+					.getVertexFormats		()
+					.forEach				(vertexFormat -> sources.put(vertexFormat, bufferSource));
+
 			return this;
 		}
 

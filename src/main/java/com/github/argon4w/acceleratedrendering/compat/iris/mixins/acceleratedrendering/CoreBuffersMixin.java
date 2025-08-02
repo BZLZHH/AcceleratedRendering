@@ -12,10 +12,10 @@ import org.spongepowered.asm.mixin.injection.At;
 public class CoreBuffersMixin {
 
 	@ModifyReturnValue(
-			method	= "getCoreBufferSourceSet",
+			method	= "getCoreBufferSources",
 			at		= @At("RETURN")
 	)
-	private static AcceleratedBufferSources getShadowBufferSourceSet(AcceleratedBufferSources original) {
+	private static AcceleratedBufferSources getShadowBufferSources(AcceleratedBufferSources original) {
 		return ShadowRenderingState.areShadowsCurrentlyBeingRendered() ? IrisCompatBuffers.SHADOW : original;
 	}
 }

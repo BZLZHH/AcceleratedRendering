@@ -9,10 +9,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(AcceleratedBufferSources.class)
-public class AcceleratedBufferSourceSetMixin {
+public class AcceleratedBufferSourcesMixin {
 
 	@WrapOperation(
-			method	= "apply(Lnet/minecraft/client/renderer/RenderType;)Lcom/mojang/blaze3d/vertex/VertexConsumer;",
+			method	= "getBuffer",
 			at		= @At(
 					value	= "FIELD",
 					target	= "Lnet/minecraft/client/renderer/RenderType;name:Ljava/lang/String;"

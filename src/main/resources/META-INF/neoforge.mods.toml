@@ -49,42 +49,62 @@ description='''${mod_description}'''
 # The [[mixins]] block allows you to declare your mixin config to FML so that it gets loaded.
 
 # Accelerated Rendering Core Mixins
+# Provides core functions to make Accelerated Rendering works.
 [[mixins]]
 config="${mod_id}.core.mixins.json"
 
-# Accelerated Rendering Iris Compatibility Feature Mixins
+# Accelerated Rendering Compatibility Feature Mixins
+# Provides shaders and post processings that supports modified vertex formats by Iris Shadersn
 [[mixins]]
 config="${mod_id}.compat.iris.mixins.json"
 
 # Immediately Fast Compatibility Feature Mixins
+# Provides comparibility of Accelerated Rendering to BatchableBufferSource in Immediately Fast.
 [[mixins]]
-config="${mod_id}.feature.immediatelyfast.mixins.json"
+config="${mod_id}.compat.immediatelyfast.mixins.json"
+
+# Accelerated Rendering Curios Compatibility Feature Mixins
+# Provides compatibility features that prevents some bad rendering code from breaking Accelerated Rendering.
+[[mixins]]
+config="${mod_id}.compat.curios.mixins.json"
 
 # Accelerated Entity Rendering Feature Mixins
+# Provides basic entity acceleration feature controllers and entity shadows acceleration.
 [[mixins]]
 config="${mod_id}.feature.entities.mixins.json"
 
 # Accelerated Entity ModelPart Rendering Feature Mixins
+# Accelerates the rendering of vanilla entities or modded vanilla-Like entities that uses ModelPart.
 [[mixins]]
 config="${mod_id}.feature.modelparts.mixins.json"
 
-#Accelerated Item Rendering Feature Mixins
+# Accelerated Item Rendering Feature Mixins
+# Accelerates the rendering of simple item models that use BakedModel/BakedQuads and provides acceleration feature controller of them.
 [[mixins]]
 config="${mod_id}.feature.items.mixins.json"
 
 # Accelerated Text Rendering Feature Mixins
+# Accekerates the rendering of BakedGlyph which is the most common way of rendering text in Minecraft and provides acceleration feature controller of them.
 [[mixins]]
 config="${mod_id}.feature.text.mixins.json"
 
-#Simple Bedrock Model Acceleration Feature Mixins
+# Filter Feature Mixins
+# Prevent specific entities/block entities from being accelerated when rendering to achieve better compatibility.
+[[mixins]]
+config="${mod_id}.feature.filter.mixins.json"
+
+# Simple Bedrock Model Acceleration Feature Mixins
+# Accelerates the rendering of entities that uses BedrockPart provided by the SimpleBedrockModel such as older version model in Touhou Little Maid.
 [[mixins]]
 config="${mod_id}.feature.simplebedrockmodel.mixins.json"
 
 # Touhou Little Maid Acceleration Feature Mixins
+# Accelerates the rendering of maids in Touhou Little Maid that uses modified version of the GeckoLib.
 [[mixins]]
 config="${mod_id}.feature.touhoulittlemaid.mixins.json"
 
 # Geckolib Acceleration Feature Mixins
+# Accelerated the entities and block entities that uses the GeoBone provided by GeckoLib.
 [[mixins]]
 config="${mod_id}.feature.geckolib.mixins.json"
 

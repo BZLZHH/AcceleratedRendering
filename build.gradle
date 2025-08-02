@@ -38,6 +38,13 @@ repositories {
             includeGroup "com.github.TartaricAcid"
         }
     }
+
+    maven {
+        url "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
 }
 
 base {
@@ -141,9 +148,10 @@ dependencies {
     implementation "maven.modrinth:iris:1.8.8+1.21.1-neoforge"
 
     compileOnly "maven.modrinth:touhou-little-maid:3XPwCAVd"
-    compileOnly 'com.github.TartaricAcid:SimpleBedrockModel:neoforge-1.21.1-1.2.1-release'
     compileOnly "maven.modrinth:geckolib:QEqpUJ1G"
     compileOnly "maven.modrinth:immediatelyfast:1.6.6+1.21.1-neoforge"
+    compileOnly "maven.modrinth:curios:9.5.1+1.21.1"
+    compileOnly 'com.github.TartaricAcid:SimpleBedrockModel:neoforge-1.21.1-1.2.1-release'
     compileOnly "org.projectlombok:lombok:1.18.38"
 
     annotationProcessor "org.projectlombok:lombok:1.18.38"

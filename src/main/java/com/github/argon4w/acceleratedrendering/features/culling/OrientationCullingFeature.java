@@ -30,8 +30,8 @@ public class OrientationCullingFeature {
 		CULLING_CONTROLLER_STACK.push(FeatureStatus.ENABLED);
 	}
 
-	public static void forceSetCulling(FeatureStatus culling) {
-		CULLING_CONTROLLER_STACK.push(culling);
+	public static void forceSetCulling(FeatureStatus status) {
+		CULLING_CONTROLLER_STACK.push(status);
 	}
 
 	public static void resetCullingSetting() {

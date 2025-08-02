@@ -6,9 +6,9 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.ExtensionMethod;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 
-@ExtensionMethod	(VertexConsumerExtension.class)
 @AllArgsConstructor
 @EqualsAndHashCode	(callSuper = false)
+@ExtensionMethod	(VertexConsumerExtension.class)
 public class AcceleratedSpriteCoordinateExpander extends AcceleratedVertexConsumerWrapper {
 
 	private final VertexConsumer		delegate;

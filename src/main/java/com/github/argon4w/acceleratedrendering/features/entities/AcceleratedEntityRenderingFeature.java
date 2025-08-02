@@ -36,7 +36,7 @@ public class AcceleratedEntityRenderingFeature {
 		PIPELINE_CONTROLLER_STACK.push(pipeline);
 	}
 
-	public static void resetPipelineSetting() {
+	public static void resetPipeline() {
 		PIPELINE_CONTROLLER_STACK.pop();
 	}
 
