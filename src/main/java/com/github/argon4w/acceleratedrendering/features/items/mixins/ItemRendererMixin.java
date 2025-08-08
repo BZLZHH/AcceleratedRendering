@@ -50,7 +50,7 @@ public class ItemRendererMixin implements IAcceleratedRenderer<AcceleratedItemRe
 				||		!	AcceleratedItemRenderingFeature	.isEnabled						()
 				||		!	AcceleratedItemRenderingFeature	.shouldUseAcceleratedPipeline	()
 				||		!	extension1						.isAccelerated					()
-				||	(		CoreFeature						.isRenderingHand				() && !extension2.isAcceleratedInHand())
+				||	(		CoreFeature						.isRenderingHand				() && !extension2.isAlwaysAccelerated())
 		) {
 			original.call(
 					instance,

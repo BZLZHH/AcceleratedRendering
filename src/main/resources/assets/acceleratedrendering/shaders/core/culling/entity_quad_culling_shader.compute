@@ -32,20 +32,20 @@ struct Polygon {
 
 layout(local_size_x = 128) in;
 
-layout(binding=1, std430) readonly  buffer Vertices {
-    Vertex      vertices[];
+layout(binding=1, std430) restrict readonly buffer Vertices {
+    Vertex vertices[];
 };
 
-layout(binding=2, std430) readonly  buffer Sharings {
+layout(binding=2, std430) restrict readonly buffer Sharings {
     SharingData sharings[];
 };
 
-layout(binding=4, std430) readonly  buffer Varyings {
+layout(binding=4, std430) restrict readonly buffer Varyings {
     VaryingData varyings[];
 };
 
-layout(binding=6, std430) writeonly buffer PolygonsOut {
-    Polygon     polygonsOut[];
+layout(binding=6, std430) restrict writeonly buffer PolygonsOut {
+    Polygon polygonsOut[];
 };
 
 layout(binding=0, offset=0) uniform atomic_uint indexCounter;

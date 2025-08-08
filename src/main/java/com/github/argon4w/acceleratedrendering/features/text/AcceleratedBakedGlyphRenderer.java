@@ -66,7 +66,7 @@ public class AcceleratedBakedGlyphRenderer implements IAcceleratedRenderer<Vecto
 			return;
 		}
 
-		var meshCollector	= new SimpleMeshCollector	(extension.getBufferSet().getBufferEnvironment().getLayout());
+		var meshCollector	= new SimpleMeshCollector	(extension.getLayout());
 		var meshBuilder		= extension.decorate		(meshCollector);
 
 		var italicOffsetUp		= italic ? 1.0f - 0.25f * bakedGlyph.up		: 0.0f;

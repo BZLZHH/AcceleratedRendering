@@ -23,6 +23,11 @@ public class NullMemoryInterface implements IMemoryInterface {
 	}
 
 	@Override
+	public void putInt(long address, long value) {
+
+	}
+
+	@Override
 	public void putFloat(long address, float value) {
 
 	}

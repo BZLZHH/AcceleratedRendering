@@ -1,10 +1,13 @@
 package com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders;
 
-import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.AcceleratedBufferSetPool;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.renderers.IAcceleratedRenderer;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.renderers.IBufferDecorator;
+import com.github.argon4w.acceleratedrendering.core.buffers.memory.IMemoryLayout;
 import com.github.argon4w.acceleratedrendering.core.meshes.ServerMesh;
+import com.github.argon4w.acceleratedrendering.core.utils.TextureUtils;
+import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormatElement;
 import net.minecraft.client.renderer.RenderType;
 import org.joml.Matrix3f;
 import org.joml.Matrix4f;
@@ -30,12 +33,20 @@ public interface IAcceleratedVertexConsumer extends IBufferDecorator, IBufferGra
 		throw new UnsupportedOperationException("Unsupported Operation.");
 	}
 
-	default AcceleratedBufferSetPool.BufferSet getBufferSet() {
+	default RenderType getRenderType() {
 		throw new UnsupportedOperationException("Unsupported Operation.");
 	}
 
-	default RenderType getRenderType() {
+	default IMemoryLayout<VertexFormatElement> getLayout() {
 		throw new UnsupportedOperationException("Unsupported Operation.");
+	}
+
+	default int getPolygonSize() {
+		throw new UnsupportedOperationException("Unsupported Operation.");
+	}
+
+	default NativeImage downloadTexture() {
+		return TextureUtils.downloadTexture(getRenderType(), 0);
 	}
 
 	default <T> void doRender(

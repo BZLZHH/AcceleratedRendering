@@ -31,7 +31,7 @@ public interface BakedModelMixin extends IAcceleratedBakedModel {
 
 	@Unique
 	@Override
-	default boolean isAcceleratedInHand() {
+	default boolean isAlwaysAccelerated() {
 		return false;
 	}
 

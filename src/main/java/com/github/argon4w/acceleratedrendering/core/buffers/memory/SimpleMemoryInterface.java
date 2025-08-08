@@ -28,6 +28,11 @@ public class SimpleMemoryInterface implements IMemoryInterface {
 	}
 
 	@Override
+	public void putInt(long address, long value) {
+		MemoryUtil.memPutInt(address + offset, (int) value);
+	}
+
+	@Override
 	public void putFloat(long address, float value) {
 		MemoryUtil.memPutFloat(address + offset, value);
 	}

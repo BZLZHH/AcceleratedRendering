@@ -72,9 +72,9 @@
   "acceleratedrendering.configuration.filter.block_entity_filter_type": "Block Entity Filter Type",
   "acceleratedrendering.configuration.filter.block_entity_filter_type.tooltip": "- BLACKLIST: Block entities that are not in the filter values can pass the filter and be accelerated when rendering.\n- WHITELIST: Block entities that are in the filter values can pass the filter and be accelerated when rendering.",
   "acceleratedrendering.configuration.filter.entity_filter_values": "Entity Filter Values",
-  "acceleratedrendering.configuration.filter.entity_filter_values.tooltip": "The configurable filter values of the entity filter.\nChanging this will affect the entity filter.",
+  "acceleratedrendering.configuration.filter.entity_filter_values.tooltip": "You can configure the entity filter by this list.\nEntity filter will use this list and the filter type to determine if an entity can pass the filter.",
   "acceleratedrendering.configuration.filter.block_entity_filter_values": "Block Entity Filter Values",
-  "acceleratedrendering.configuration.filter.block_entity_filter_values.tooltip": "The configurable filter values of the block entity filter.\nChanging this will affect the block entity filter.",
+  "acceleratedrendering.configuration.filter.block_entity_filter_values.tooltip": "You can configure the block entity filter by this list.\nBlock entity filter will use this list and the filter type to determine if a block entity can pass the filter.",
   "acceleratedrendering.configuration.filter.entity_filter_values.button": "Configure",
   "acceleratedrendering.configuration.filter.block_entity_filter_values.button": "Configure",
   "acceleratedrendering.configuration.filter.button": "Configure",
@@ -100,7 +100,7 @@
   "acceleratedrendering.configuration.curios_compatibility.item_filter_type": "Curios Item Filter Type",
   "acceleratedrendering.configuration.curios_compatibility.item_filter_type.tooltip": "- BLACKLIST: Curios items that are not in the filter values can pass the filter and not being prevented to be accelerated.\"\n- WHITELIST: Curios items that are in the filter values can pass the filter and not being prevented to be accelerated.\"",
   "acceleratedrendering.configuration.curios_compatibility.item_filter_values": "Curios Item Filter Values",
-  "acceleratedrendering.configuration.curios_compatibility.item_filter_values.tooltip": "The configurable filter values of the curios item filter.\nChanging this will affect the curios item filter.",
+  "acceleratedrendering.configuration.curios_compatibility.item_filter_values.tooltip": "You can configure the curios item filter by this list.\nCurios item filter will use this list and the filter type to determine if a curios item can pass the filter.",
   "acceleratedrendering.configuration.curios_compatibility.item_filter_values.button": "Configure",
   "acceleratedrendering.configuration.curios_compatibility.button": "Configure"
 }

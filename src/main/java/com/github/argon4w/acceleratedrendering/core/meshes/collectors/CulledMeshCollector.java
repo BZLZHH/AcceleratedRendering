@@ -1,30 +1,31 @@
 package com.github.argon4w.acceleratedrendering.core.meshes.collectors;
 
+import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.IAcceleratedVertexConsumer;
 import com.github.argon4w.acceleratedrendering.core.buffers.memory.IMemoryLayout;
 import com.github.argon4w.acceleratedrendering.core.utils.CullerUtils;
-import com.github.argon4w.acceleratedrendering.core.utils.TextureUtils;
 import com.github.argon4w.acceleratedrendering.core.utils.Vertex;
 import com.mojang.blaze3d.platform.NativeImage;
 import com.mojang.blaze3d.vertex.ByteBufferBuilder;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormatElement;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 
 public class CulledMeshCollector implements VertexConsumer, IMeshCollector {
 
-	private final	int					polygonSize;
-	private final	NativeImage			texture;
-	private final	SimpleMeshCollector	meshCollector;
-	private final	Vertex[]			polygon;
+	private final	int									polygonSize;
+	private final	NativeImage							texture;
+	private	final	IMemoryLayout<VertexFormatElement>	layout;
+	private final	SimpleMeshCollector					meshCollector;
+	private final	Vertex[]							polygon;
 
-	private			int					vertexIndex;
+	private			int									vertexIndex;
 
-	public CulledMeshCollector(RenderType renderType, IMemoryLayout<VertexFormatElement> layout) {
-		this.polygonSize	= renderType.mode	.primitiveLength;
-		this.texture		= TextureUtils		.downloadTexture(renderType, 0);
-		this.meshCollector	= new SimpleMeshCollector			(layout);
-		this.polygon		= new Vertex[this.polygonSize];
+	public CulledMeshCollector(IAcceleratedVertexConsumer vertexConsumer) {
+		this.polygonSize	= vertexConsumer	.getPolygonSize	();
+		this.texture		= vertexConsumer	.downloadTexture();
+		this.layout			= vertexConsumer	.getLayout		();
+		this.meshCollector	= new SimpleMeshCollector			(this.layout);
+		this.polygon		= new Vertex						[this.polygonSize];
 
 		this.vertexIndex	= -1;
 	}

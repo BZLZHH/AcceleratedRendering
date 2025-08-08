@@ -2,7 +2,7 @@ package com.github.argon4w.acceleratedrendering.compat.iris.mixins.acceleratedre
 
 import com.github.argon4w.acceleratedrendering.compat.iris.interfaces.IIrisAcceleratedBufferBuilder;
 import com.github.argon4w.acceleratedrendering.compat.iris.interfaces.IIrisMeshInfoCache;
-import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.AcceleratedBufferSetPool;
+import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.AcceleratedRingBuffers;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.AcceleratedBufferBuilder;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.meshes.IMeshInfoCache;
 import com.github.argon4w.acceleratedrendering.core.programs.dispatchers.MeshUploadingProgramDispatcher;
@@ -28,7 +28,7 @@ public class MeshUploadingProgramDispatcherMixin {
 	)
 	public void addIrisData(
 			Collection<AcceleratedBufferBuilder>						builders,
-			AcceleratedBufferSetPool.BufferSet							bufferSet,
+			AcceleratedRingBuffers.Buffers								buffers,
 			CallbackInfo												ci,
 			@Local(name = "meshInfos")		IMeshInfoCache				meshInfos,
 			@Local(name = "builder")		AcceleratedBufferBuilder	builder,

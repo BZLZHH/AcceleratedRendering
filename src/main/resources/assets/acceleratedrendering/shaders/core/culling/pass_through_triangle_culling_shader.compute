@@ -8,7 +8,7 @@ struct Polygon {
 
 layout(local_size_x = 128) in;
 
-layout(binding=6, std430) writeonly buffer PolygonsOut {
+layout(binding=6, std430) restrict writeonly buffer PolygonsOut {
     Polygon polygonsOut[];
 };
 

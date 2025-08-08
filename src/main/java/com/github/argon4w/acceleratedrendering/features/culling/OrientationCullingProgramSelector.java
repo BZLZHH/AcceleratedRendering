@@ -26,7 +26,8 @@ public class OrientationCullingProgramSelector implements ICullingProgramSelecto
 	@Override
 	public ICullingProgramDispatcher select(RenderType renderType) {
 		if (			OrientationCullingFeature	.isEnabled				()
-				&&	(	OrientationCullingFeature	.shouldIgnoreCullState	() || RenderTypeUtils.isCulled(renderType))) {
+				&&	(	OrientationCullingFeature	.shouldIgnoreCullState	() || RenderTypeUtils.isCulled(renderType))
+		) {
 			return switch (renderType.mode) {
 				case QUADS		-> quadDispatcher;
 				case TRIANGLES	-> triangleDispatcher;

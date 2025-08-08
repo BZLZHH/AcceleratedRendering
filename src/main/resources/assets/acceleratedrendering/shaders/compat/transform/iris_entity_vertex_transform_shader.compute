@@ -31,27 +31,27 @@ struct SharingData {
 
 layout(local_size_x = 128) in;
 
-layout(binding=0, std430) readonly  buffer VerticesIn {
-    Vertex      verticesIn[];
+layout(binding=0, std430) restrict readonly buffer VerticesIn {
+    Vertex verticesIn[];
 };
 
-layout(binding=1, std430) writeonly buffer VerticesOut {
-    Vertex      verticesOut[];
+layout(binding=1, std430) restrict writeonly buffer VerticesOut {
+    Vertex verticesOut[];
 };
 
-layout(binding=2, std430) readonly  buffer Sharings {
+layout(binding=2, std430) restrict readonly buffer Sharings {
     SharingData sharings[];
 };
 
-layout(binding=3, std430) readonly  buffer VaryingsIn {
+layout(binding=3, std430) restrict readonly buffer VaryingsIn {
     VaryingData varyingsIn[];
 };
 
-layout(binding=4, std430) writeonly buffer VaryingsOut {
+layout(binding=4, std430) restrict writeonly buffer VaryingsOut {
     VaryingData varyingsOut[];
 };
 
-layout(binding=5, std430) readonly  buffer Meshes {
+layout(binding=5, std430) restrict readonly buffer Meshes {
     Vertex meshVertices[];
 };
 

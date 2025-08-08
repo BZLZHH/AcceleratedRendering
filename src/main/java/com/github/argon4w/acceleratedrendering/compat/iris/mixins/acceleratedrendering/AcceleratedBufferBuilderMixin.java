@@ -1,7 +1,7 @@
 package com.github.argon4w.acceleratedrendering.compat.iris.mixins.acceleratedrendering;
 
 import com.github.argon4w.acceleratedrendering.compat.iris.interfaces.IIrisAcceleratedBufferBuilder;
-import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.AcceleratedBufferSetPool;
+import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.AcceleratedRingBuffers;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.AcceleratedBufferBuilder;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.ElementBufferPool;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.StagingBufferPool;
@@ -36,12 +36,12 @@ public class AcceleratedBufferBuilderMixin implements IIrisAcceleratedBufferBuil
 			at		= @At("TAIL")
 	)
 	public void constructor(
-			StagingBufferPool.StagingBuffer		vertexBuffer,
-			StagingBufferPool.StagingBuffer		varyingBuffer,
-			ElementBufferPool.ElementSegment	elementSegment,
-			AcceleratedBufferSetPool.BufferSet	bufferSet,
-			RenderType							renderType,
-			CallbackInfo						ci
+			StagingBufferPool		.StagingBuffer	vertexBuffer,
+			StagingBufferPool		.StagingBuffer	varyingBuffer,
+			ElementBufferPool		.ElementSegment	elementSegment,
+			AcceleratedRingBuffers	.Buffers		buffers,
+			RenderType								renderType,
+			CallbackInfo							ci
 	) {
 		entityIdOffset	= layout.getElement(IrisVertexFormats.ENTITY_ID_ELEMENT);
 		entityOffset	= layout.getElement(IrisVertexFormats.ENTITY_ELEMENT);

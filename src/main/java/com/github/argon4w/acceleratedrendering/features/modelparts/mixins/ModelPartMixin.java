@@ -94,7 +94,7 @@ public class ModelPartMixin implements IAcceleratedRenderer<Void> {
 			return;
 		}
 
-		var culledMeshCollector	= new CulledMeshCollector	(extension.getRenderType(), extension.getBufferSet().getBufferEnvironment().getLayout());
+		var culledMeshCollector	= new CulledMeshCollector	(extension);
 		var meshBuilder			= extension.decorate		(culledMeshCollector);
 
 		for (var cube : cubes) {

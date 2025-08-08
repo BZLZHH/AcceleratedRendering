@@ -30,9 +30,10 @@ public class IrisCullingProgramSelector implements ICullingProgramSelector {
 	public ICullingProgramDispatcher select(RenderType renderType) {
 		if (			IrisCompatFeature			.isEnabled					()
 				&&		IrisCompatFeature			.isIrisCompatCullingEnabled	()
-				&&	(	IrisCompatFeature			.isShadowCullingEnabled		()	|| !ShadowRenderingState.areShadowsCurrentlyBeingRendered())
+				&&	(	IrisCompatFeature			.isShadowCullingEnabled		()	|| !	ShadowRenderingState.areShadowsCurrentlyBeingRendered())
 				&&		OrientationCullingFeature	.isEnabled					()
-				&&	(	OrientationCullingFeature	.shouldIgnoreCullState		()	|| RenderTypeUtils.isCulled(renderType))) {
+				&&	(	OrientationCullingFeature	.shouldIgnoreCullState		()	|| 		RenderTypeUtils		.isCulled(renderType))
+		) {
 			return switch (renderType.mode) {
 				case QUADS		-> quadDispatcher;
 				case TRIANGLES	-> triangleDispatcher;

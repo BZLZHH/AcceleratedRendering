@@ -21,6 +21,7 @@ public class ComputeShaderProgramLoader extends SimplePreparableReloadListener<M
 	public	static final	ComputeShaderProgramLoader				INSTANCE		= new ComputeShaderProgramLoader();
 	private	static final	Map<ResourceLocation, ComputeProgram>	COMPUTE_SHADERS	= new Object2ObjectOpenHashMap<>();
 	private	static			boolean									LOADED			= false;
+	private	static			boolean									DELETED			= false;
 
 	@Override
 	protected Map<ResourceLocation, ComputeShaderProgramLoader.ShaderSource> prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
@@ -110,10 +111,16 @@ public class ComputeShaderProgramLoader extends SimplePreparableReloadListener<M
 		for (var program : COMPUTE_SHADERS.values()) {
 			program.delete();
 		}
+
+		DELETED = true;
 	}
 
 	public static boolean isProgramsLoaded() {
 		return LOADED;
+	}
+
+	public static boolean isProgramsDeleted() {
+		return DELETED;
 	}
 
 	public record ShaderDefinition(ResourceLocation location, int barrierFlags) {

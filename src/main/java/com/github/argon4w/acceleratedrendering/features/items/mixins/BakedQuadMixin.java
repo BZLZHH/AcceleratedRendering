@@ -57,7 +57,7 @@ public abstract class BakedQuadMixin implements IAcceleratedBakedQuad {
 			return;
 		}
 
-		var culledMeshCollector	= new CulledMeshCollector	(extension.getRenderType(), extension.getBufferSet().getBufferEnvironment().getLayout());
+		var culledMeshCollector	= new CulledMeshCollector	(extension);
 		var meshBuilder			= extension.decorate		(culledMeshCollector);
 
 		for (var i = 0; i < vertices.length / 8; i++) {

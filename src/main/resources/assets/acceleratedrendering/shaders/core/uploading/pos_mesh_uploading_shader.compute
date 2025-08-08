@@ -28,24 +28,24 @@ struct MeshInfo {
 
 layout(local_size_x = 128) in;
 
-layout(binding=1,   std430) writeonly   buffer Vertices {
-    Vertex      vertices[];
+layout(binding=1, std430) restrict writeonly buffer Vertices {
+    Vertex vertices[];
 };
 
-layout(binding=2,   std430) readonly    buffer Sharings {
+layout(binding=2, std430) restrict readonly buffer Sharings {
     SharingData sharings[];
 };
 
-layout(binding=4,   std430) writeonly   buffer Varyings {
+layout(binding=4, std430) restrict writeonly buffer Varyings {
     VaryingData varyings[];
 };
 
-layout(binding=7,   std430) readonly    buffer Meshes {
-    Vertex      meshVertices[];
+layout(binding=7, std430) restrict readonly buffer Meshes {
+    Vertex meshVertices[];
 };
 
-layout(binding=8,   std430) readonly    buffer MeshInfos {
-    MeshInfo    meshInfos[];
+layout(binding=8, std430) restrict readonly buffer MeshInfos {
+    MeshInfo meshInfos[];
 };
 
 layout(location=0) uniform uint meshCount;

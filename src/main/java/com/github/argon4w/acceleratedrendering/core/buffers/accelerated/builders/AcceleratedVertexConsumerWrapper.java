@@ -1,10 +1,11 @@
 package com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders;
 
-import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.AcceleratedBufferSetPool;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.renderers.IAcceleratedRenderer;
+import com.github.argon4w.acceleratedrendering.core.buffers.memory.IMemoryLayout;
 import com.github.argon4w.acceleratedrendering.core.meshes.ServerMesh;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormatElement;
 import lombok.experimental.ExtensionMethod;
 import net.minecraft.client.renderer.RenderType;
 import org.joml.Matrix3f;
@@ -41,17 +42,24 @@ public abstract class AcceleratedVertexConsumerWrapper implements IAcceleratedVe
 	}
 
 	@Override
-	public AcceleratedBufferSetPool.BufferSet getBufferSet() {
-		return getDelegate		()
-				.getAccelerated	()
-				.getBufferSet	();
-	}
-
-	@Override
 	public RenderType getRenderType() {
 		return getDelegate		()
 				.getAccelerated	()
 				.getRenderType	();
+	}
+
+	@Override
+	public IMemoryLayout<VertexFormatElement> getLayout() {
+		return getDelegate		()
+				.getAccelerated	()
+				.getLayout		();
+	}
+
+	@Override
+	public int getPolygonSize() {
+		return getDelegate		()
+				.getAccelerated	()
+				.getPolygonSize	();
 	}
 
 	@Override

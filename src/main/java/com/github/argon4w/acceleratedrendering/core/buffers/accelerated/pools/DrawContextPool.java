@@ -5,6 +5,9 @@ import com.github.argon4w.acceleratedrendering.core.buffers.memory.IMemoryInterf
 import com.github.argon4w.acceleratedrendering.core.buffers.memory.SimpleMemoryInterface;
 import com.github.argon4w.acceleratedrendering.core.utils.SimpleResetPool;
 import com.mojang.blaze3d.vertex.VertexFormat;
+import lombok.Getter;
+import lombok.Setter;
+import net.minecraft.client.renderer.RenderType;
 
 import static org.lwjgl.opengl.GL46.*;
 
@@ -40,19 +43,24 @@ public class DrawContextPool extends SimpleResetPool<DrawContextPool.IndirectDra
 		return get();
 	}
 
+	@Getter
+	@Setter
 	public class IndirectDrawContext {
 
-		public static	final int				ELEMENT_COUNT_INDEX		= 0;
-		public static	final IMemoryInterface	INDIRECT_COUNT			= new SimpleMemoryInterface(0L * 4L, 4);
-		public static	final IMemoryInterface	INDIRECT_INSTANCE_COUNT	= new SimpleMemoryInterface(1L * 4L, 4);
-		public static	final IMemoryInterface	INDIRECT_FIRST_INDEX	= new SimpleMemoryInterface(2L * 4L, 4);
-		public static	final IMemoryInterface	INDIRECT_BASE_INDEX		= new SimpleMemoryInterface(3L * 4L, 4);
-		public static	final IMemoryInterface	INDIRECT_BASE_INSTANCE	= new SimpleMemoryInterface(4L * 4L, 4);
+		public static	final	int					ELEMENT_COUNT_INDEX		= 0;
+		public static	final	IMemoryInterface	INDIRECT_COUNT			= new SimpleMemoryInterface(0L * 4L, 4);
+		public static	final	IMemoryInterface	INDIRECT_INSTANCE_COUNT	= new SimpleMemoryInterface(1L * 4L, 4);
+		public static	final	IMemoryInterface	INDIRECT_FIRST_INDEX	= new SimpleMemoryInterface(2L * 4L, 4);
+		public static	final	IMemoryInterface	INDIRECT_BASE_INDEX		= new SimpleMemoryInterface(3L * 4L, 4);
+		public static	final	IMemoryInterface	INDIRECT_BASE_INSTANCE	= new SimpleMemoryInterface(4L * 4L, 4);
 
-		private			final long				commandOffset;
+		private			final	long				commandOffset;
+		private					RenderType			renderType;
 
 		public IndirectDrawContext(int index) {
 			this.commandOffset	= index * 20L;
+			this.renderType		= null;
+
 			var address			= context		.reserve(20L);
 
 			INDIRECT_COUNT						.putInt	(address, 0);
@@ -67,7 +75,7 @@ public class DrawContextPool extends SimpleResetPool<DrawContextPool.IndirectDra
 			var commandAddress		= context			.addressAt	(commandOffset);
 
 			INDIRECT_COUNT		.putInt		(commandAddress,	0);
-			INDIRECT_FIRST_INDEX.putInt		(commandAddress,	(int) elementOffset / 4);
+			INDIRECT_FIRST_INDEX.putInt		(commandAddress,	elementOffset / 4);
 			context				.bindRange	(
 					GL_ATOMIC_COUNTER_BUFFER,
 					ELEMENT_COUNT_INDEX,

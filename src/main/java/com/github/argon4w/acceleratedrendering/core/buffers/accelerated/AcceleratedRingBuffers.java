@@ -5,6 +5,8 @@ import com.github.argon4w.acceleratedrendering.core.backends.Sync;
 import com.github.argon4w.acceleratedrendering.core.backends.VertexArray;
 import com.github.argon4w.acceleratedrendering.core.backends.buffers.MappedBuffer;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.AcceleratedBufferBuilder;
+import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.ILayerFunction;
+import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.layers.LayerKey;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.DrawContextPool;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.ElementBufferPool;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.StagingBufferPool;
@@ -13,85 +15,91 @@ import com.github.argon4w.acceleratedrendering.core.buffers.environments.IBuffer
 import com.github.argon4w.acceleratedrendering.core.buffers.memory.IMemoryLayout;
 import com.github.argon4w.acceleratedrendering.core.utils.LoopResetPool;
 import com.mojang.blaze3d.vertex.VertexFormatElement;
+import it.unimi.dsi.fastutil.ints.Int2ReferenceMap;
+import it.unimi.dsi.fastutil.ints.Int2ReferenceOpenHashMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import lombok.Getter;
-import net.minecraft.client.renderer.RenderType;
 import org.apache.commons.lang3.mutable.MutableInt;
+
+import java.util.List;
+import java.util.Map;
 
 import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL40.GL_DRAW_INDIRECT_BUFFER;
 import static org.lwjgl.opengl.GL46.GL_ARRAY_BUFFER;
 import static org.lwjgl.opengl.GL46.GL_SHADER_STORAGE_BUFFER;
 
-public class AcceleratedBufferSetPool extends LoopResetPool<AcceleratedBufferSetPool.BufferSet, IBufferEnvironment> {
+public class AcceleratedRingBuffers extends LoopResetPool<AcceleratedRingBuffers.Buffers, IBufferEnvironment> {
 
-	public AcceleratedBufferSetPool(IBufferEnvironment bufferEnvironment) {
+	public AcceleratedRingBuffers(IBufferEnvironment bufferEnvironment) {
 		super(CoreFeature.getPooledBufferSetSize(), bufferEnvironment);
 	}
 
 	@Override
-	protected BufferSet create(IBufferEnvironment context, int i) {
-		return new BufferSet(context);
+	protected Buffers create(IBufferEnvironment context, int i) {
+		return new Buffers(context);
 	}
 
 	@Override
-	protected void reset(BufferSet bufferSet) {
+	protected void reset(Buffers buffers) {
 
 	}
 
 	@Override
-	protected void delete(BufferSet bufferSet) {
-		bufferSet.delete();
+	protected void delete(Buffers buffers) {
+		buffers.delete();
 	}
 
 	@Override
-	protected boolean test(BufferSet bufferSet) {
-		return bufferSet.isFree();
+	protected boolean test(Buffers buffers) {
+		return buffers.isFree();
 	}
 
 	@Override
-	public void init(BufferSet bufferSet) {
-		bufferSet.setUsed();
+	public void init(Buffers buffers) {
+		buffers.setUsed();
 	}
 
 	@Override
-	protected BufferSet fail(boolean force) {
+	protected Buffers fail(boolean force) {
 		var index = 0;
 
 		if (force) {
 			expand();
 		}
 
-		var bufferSet = at	(index);
-		bufferSet.waitSync	();
-		bufferSet.setUsed	();
+		var buffer = at	(index);
+		buffer.waitSync	();
+		buffer.setUsed	();
 
-		return bufferSet;
+		return buffer;
 	}
 
-	public static class BufferSet {
+	public static class Buffers {
 
-		public static	final	int																		VERTEX_BUFFER_OUT_INDEX		= 1;
-		public static	final	int																		SHARING_BUFFER_INDEX		= 2;
-		public static	final	int																		VARYING_BUFFER_OUT_INDEX	= 4;
-		public static	final	int																		ELEMENT_BUFFER_INDEX		= 6;
+		public static	final	int																VERTEX_BUFFER_OUT_INDEX		= 1;
+		public static	final	int																SHARING_BUFFER_INDEX		= 2;
+		public static	final	int																VARYING_BUFFER_OUT_INDEX	= 4;
+		public static	final	int																ELEMENT_BUFFER_INDEX		= 6;
 
-		private			final	MeshUploaderPool														meshUploaderPool;
-		private			final 	DrawContextPool															drawContextPool;
-		private			final 	ElementBufferPool														elementBufferPool;
-		private			final 	MappedBuffer															sharingBuffer;
-		private			final 	StagingBufferPool														varyingBuffer;
-		private			final	StagingBufferPool														vertexBuffer;
-		private			final 	VertexArray																vertexArray;
-		private			final 	Sync																	sync;
-		private			final 	MutableInt																sharing;
-		@Getter	private	final	Object2ObjectLinkedOpenHashMap<RenderType, AcceleratedBufferBuilder>	builders;
-		@Getter private	final	IBufferEnvironment														bufferEnvironment;
+		private			final	MeshUploaderPool												meshUploaderPool;
+		private			final 	DrawContextPool													drawContextPool;
+		private			final 	ElementBufferPool												elementBufferPool;
+		private			final 	MappedBuffer													sharingBuffer;
+		private			final 	StagingBufferPool												varyingBuffer;
+		private			final	StagingBufferPool												vertexBuffer;
+		private			final 	VertexArray														vertexArray;
+		private			final 	Sync															sync;
+		private			final 	MutableInt														sharing;
+		@Getter	private	final	Map				<LayerKey, AcceleratedBufferBuilder>			builders;
+		@Getter	private final	Int2ReferenceMap<List<DrawContextPool.IndirectDrawContext>>		layers;
+		@Getter private final	Int2ReferenceMap<ILayerFunction>								functions;
+		@Getter private	final	IBufferEnvironment												bufferEnvironment;
 
-		private 				boolean																	used;
-		private 				IMemoryLayout<VertexFormatElement>										layout;
+		private 				boolean															used;
+		private 				IMemoryLayout<VertexFormatElement>								layout;
 
-		public BufferSet(IBufferEnvironment bufferEnvironment) {
+		public Buffers(IBufferEnvironment bufferEnvironment) {
 			var size				= CoreFeature.getPooledElementBufferSize();
 			this.meshUploaderPool	= new MeshUploaderPool					();
 			this.drawContextPool	= new DrawContextPool					(size);
@@ -103,13 +111,14 @@ public class AcceleratedBufferSetPool extends LoopResetPool<AcceleratedBufferSet
 			this.sync				= new Sync								();
 			this.sharing			= new MutableInt						(0);
 			this.builders			= new Object2ObjectLinkedOpenHashMap<>	();
+			this.layers				= new Int2ReferenceOpenHashMap		<>	();
+			this.functions			= new Int2ReferenceOpenHashMap		<>	();
 			this.bufferEnvironment	= bufferEnvironment;
 
 			this.used = false;
 		}
 
 		public void reset() {
-			vertexArray			.unbindVertexArray	();
 			meshUploaderPool	.reset				();
 			drawContextPool		.reset				();
 			elementBufferPool	.reset				();
@@ -117,7 +126,9 @@ public class AcceleratedBufferSetPool extends LoopResetPool<AcceleratedBufferSet
 			sharingBuffer		.reset				();
 			vertexBuffer		.reset				();
 			sharing				.setValue			(0);
+
 			builders			.clear				();
+			layers.clear				();
 		}
 
 		public void bindTransformBuffers() {
@@ -142,8 +153,9 @@ public class AcceleratedBufferSetPool extends LoopResetPool<AcceleratedBufferSet
 			drawContextPool.getContext().bind			(GL_DRAW_INDIRECT_BUFFER);
 
 			if (		!	bufferEnvironment	.getLayout			().equals		(layout)
+					||		vertexBuffer		.getBufferOut		().isResized	()
 					||		elementBufferPool	.getElementBufferOut().isResized	()
-					||		vertexBuffer		.getBufferOut		().isResized	()) {
+			) {
 				layout = bufferEnvironment					.getLayout			();
 				elementBufferPool	.getElementBufferOut()	.bind				(GL_ELEMENT_ARRAY_BUFFER);
 				elementBufferPool	.getElementBufferOut()	.resetResized		();
@@ -157,6 +169,10 @@ public class AcceleratedBufferSetPool extends LoopResetPool<AcceleratedBufferSet
 			vertexBuffer		.prepare();
 			varyingBuffer		.prepare();
 			elementBufferPool	.prepare();
+		}
+
+		public void unbindVertexArray() {
+			vertexArray.unbindVertexArray();
 		}
 
 		public MeshUploaderPool.MeshUploader getMeshUploader() {

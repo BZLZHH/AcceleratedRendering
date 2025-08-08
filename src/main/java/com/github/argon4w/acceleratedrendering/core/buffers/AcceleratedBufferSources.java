@@ -33,16 +33,26 @@ public class AcceleratedBufferSources implements IAcceleratedBufferSource {
 	}
 
 	@Override
-	public AcceleratedBufferBuilder getBuffer(RenderType pRenderType) {
-		if (			pRenderType		!= null
-				&& (	CoreFeature		.shouldForceAccelerateTranslucent	() || canSort || !pRenderType.sortOnUpload)
-				&&		validModes		.contains							(pRenderType.mode)
-				&& !	invalidNames	.contains							(pRenderType.name)
-				&&		sources			.containsKey						(pRenderType.format)
+	public AcceleratedBufferBuilder getBuffer(
+			int			layer,
+			RenderType	renderType,
+			Runnable	before,
+			Runnable	after
+	) {
+		if (			renderType		!= null
+				&& (	CoreFeature		.shouldForceAccelerateTranslucent	() || canSort || !renderType.sortOnUpload)
+				&&		validModes		.contains							(renderType.mode)
+				&& !	invalidNames	.contains							(renderType.name)
+				&&		sources			.containsKey						(renderType.format)
 		) {
 			return sources
-					.get		(pRenderType.format)
-					.getBuffer	(pRenderType);
+					.get		(renderType.format)
+					.getBuffer	(
+							layer,
+							renderType,
+							before,
+							after
+					);
 		}
 
 		return null;
@@ -70,9 +80,9 @@ public class AcceleratedBufferSources implements IAcceleratedBufferSource {
 
 		public Builder source(AcceleratedBufferSource bufferSource) {
 			bufferSource
-					.getBufferEnvironment	()
-					.getVertexFormats		()
-					.forEach				(vertexFormat -> sources.put(vertexFormat, bufferSource));
+					.getEnvironment		()
+					.getVertexFormats	()
+					.forEach			(vertexFormat -> sources.put(vertexFormat, bufferSource));
 
 			return this;
 		}

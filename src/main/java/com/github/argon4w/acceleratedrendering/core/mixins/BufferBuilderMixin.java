@@ -1,12 +1,14 @@
 package com.github.argon4w.acceleratedrendering.core.mixins;
 
 import com.github.argon4w.acceleratedrendering.core.CoreBuffers;
+import com.github.argon4w.acceleratedrendering.core.buffers.EmptyAcceleratedBufferSources;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.IAcceleratedBufferSource;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.IAccelerationHolder;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.AcceleratedBufferBuilder;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.IAcceleratedVertexConsumer;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.renderers.IAcceleratedRenderer;
 import com.github.argon4w.acceleratedrendering.core.programs.ComputeShaderProgramLoader;
+import com.google.common.util.concurrent.Runnables;
 import com.mojang.blaze3d.vertex.BufferBuilder;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.minecraft.client.renderer.RenderType;
@@ -18,18 +20,19 @@ import org.spongepowered.asm.mixin.Unique;
 @Mixin(BufferBuilder.class)
 public class BufferBuilderMixin implements IAccelerationHolder, IAcceleratedVertexConsumer {
 
-	@Unique private RenderType					renderType		= null;
-	@Unique private IAcceleratedBufferSource	bufferSources	= renderType -> null;
-	@Unique private AcceleratedBufferBuilder	acceleration	= null;
+	@Unique private IAcceleratedBufferSource	bufferSources = EmptyAcceleratedBufferSources.INSTANCE;
+	@Unique private RenderType					renderType;
+	@Unique private AcceleratedBufferBuilder	acceleration;
 
 	@Unique
 	@Override
 	public VertexConsumer initAcceleration(RenderType renderType) {
-		if (ComputeShaderProgramLoader.isProgramsLoaded()) {
+		if (			ComputeShaderProgramLoader.isProgramsLoaded	()
+				&&	!	ComputeShaderProgramLoader.isProgramsDeleted()
+		) {
+			this.bufferSources	= renderType.isOutline() ? CoreBuffers.OUTLINE : CoreBuffers.getCoreBufferSources();
 			this.renderType		= renderType;
-			this.bufferSources	= renderType.isOutline()
-					? CoreBuffers.OUTLINE
-					: CoreBuffers.getCoreBufferSources();
+			this.acceleration	= null;
 		}
 
 		return (VertexConsumer) this;
@@ -65,8 +68,15 @@ public class BufferBuilderMixin implements IAccelerationHolder, IAcceleratedVert
 
 	@Unique
 	public AcceleratedBufferBuilder getAccelerated() {
-		if (acceleration == null ||	acceleration.isOutdated()) {
-			acceleration = bufferSources.getBuffer(renderType);
+		if (		acceleration == null
+				||	acceleration.isOutdated()
+		) {
+			acceleration = bufferSources.getBuffer(
+					0,
+					renderType,
+					Runnables.doNothing(),
+					Runnables.doNothing()
+			);
 		}
 
 		return acceleration;

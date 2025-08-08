@@ -26,7 +26,8 @@ public class IrisPolygonProcessor implements IPolygonProcessor {
 	@Override
 	public IPolygonProgramDispatcher select(VertexFormat.Mode mode) {
 		if (		IrisCompatFeature	.isEnabled					()
-				&&	IrisCompatFeature	.isPolygonProcessingEnabled	()) {
+				&&	IrisCompatFeature	.isPolygonProcessingEnabled	()
+		) {
 			return switch (mode) {
 				case QUADS		-> quadDispatcher;
 				case TRIANGLES	-> triangleDispatcher;

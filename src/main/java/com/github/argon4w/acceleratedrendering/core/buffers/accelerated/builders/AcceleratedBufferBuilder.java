@@ -1,7 +1,7 @@
 package com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders;
 
 import com.github.argon4w.acceleratedrendering.core.CoreFeature;
-import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.AcceleratedBufferSetPool;
+import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.AcceleratedRingBuffers;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.ElementBufferPool;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.StagingBufferPool;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.pools.meshes.MeshUploaderPool;
@@ -30,72 +30,72 @@ import java.util.Map;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, VertexConsumer {
 
-	public static						final	long											VARYING_SIZE		= 4L * 4L;
-	public static						final	IMemoryInterface								VARYING_OFFSET		= new SimpleMemoryInterface(0L * 4L,		VARYING_SIZE);
-	public static						final	IMemoryInterface								VARYING_SHARING		= new SimpleMemoryInterface(1L * 4L,		VARYING_SIZE);
-	public static						final	IMemoryInterface								VARYING_MESH		= new SimpleMemoryInterface(2L * 4L, 		VARYING_SIZE);
-	public static						final	IMemoryInterface								VARYING_SHOULD_CULL	= new SimpleMemoryInterface(3L * 4L,		VARYING_SIZE);
+	public static								final	long											VARYING_SIZE		= 4L * 4L;
+	public static								final	IMemoryInterface								VARYING_OFFSET		= new SimpleMemoryInterface(0L * 4L,		VARYING_SIZE);
+	public static								final	IMemoryInterface								VARYING_SHARING		= new SimpleMemoryInterface(1L * 4L,		VARYING_SIZE);
+	public static								final	IMemoryInterface								VARYING_MESH		= new SimpleMemoryInterface(2L * 4L, 		VARYING_SIZE);
+	public static								final	IMemoryInterface								VARYING_SHOULD_CULL	= new SimpleMemoryInterface(3L * 4L,		VARYING_SIZE);
 
-	public static						final	long											SHARING_SIZE		= 4L * 4L * 4L + 4L * 3L * 4L;
-	public static						final	IMemoryInterface								SHARING_TRANSFORM	= new SimpleMemoryInterface(0L,				SHARING_SIZE);
-	public static						final	IMemoryInterface								SHARING_NORMAL		= new SimpleMemoryInterface(4L * 4L * 4L,	SHARING_SIZE);
+	public static								final	long											SHARING_SIZE		= 4L * 4L * 4L + 4L * 3L * 4L;
+	public static								final	IMemoryInterface								SHARING_TRANSFORM	= new SimpleMemoryInterface(0L,				SHARING_SIZE);
+	public static								final	IMemoryInterface								SHARING_NORMAL		= new SimpleMemoryInterface(4L * 4L * 4L,	SHARING_SIZE);
 
-	@Getter private						final	Map<ServerMesh, MeshUploaderPool.MeshUploader>	meshUploaders;
-	@Getter private						final	StagingBufferPool			.StagingBuffer		vertexBuffer;
-	@Getter private						final	StagingBufferPool			.StagingBuffer		varyingBuffer;
-	@Getter private						final	ElementBufferPool			.ElementSegment		elementSegment;
-	private								final	AcceleratedBufferSetPool	.BufferSet			bufferSet;
+	@Getter private								final	Map<ServerMesh, MeshUploaderPool.MeshUploader>	meshUploaders;
+	@Getter private								final	StagingBufferPool		.StagingBuffer			vertexBuffer;
+	@Getter private								final	StagingBufferPool		.StagingBuffer			varyingBuffer;
+	@Getter private								final	ElementBufferPool		.ElementSegment			elementSegment;
+	private										final	AcceleratedRingBuffers	.Buffers				buffer;
 
 
-	@EqualsAndHashCode.Include private 	final	IMemoryLayout<VertexFormatElement>				layout;
-	@EqualsAndHashCode.Include private	final	RenderType										renderType;
-	@Getter private						final	ICullingProgramDispatcher						cullingProgramDispatcher;
-	@Getter private						final	VertexFormat.Mode								mode;
-	@Getter private						final	long											vertexSize;
-	private								final	int												polygonSize;
-	private								final	int												polygonElementCount;
+	@EqualsAndHashCode.Include @Getter private 	final	IMemoryLayout<VertexFormatElement>				layout;
+	@EqualsAndHashCode.Include private			final	RenderType										renderType;
+	@Getter private								final	ICullingProgramDispatcher						cullingProgramDispatcher;
+	@Getter private								final	VertexFormat.Mode								mode;
+	@Getter private								final	long											vertexSize;
+	@Getter private								final	int												polygonSize;
+	private										final	int												polygonElementCount;
 
-	private								final	IMemoryInterface								posOffset;
-	@Getter private						final	IMemoryInterface								colorOffset;
-	private								final	IMemoryInterface								uv0Offset;
-	@Getter private						final	IMemoryInterface								uv1Offset;
-	@Getter private						final	IMemoryInterface								uv2Offset;
-	private								final	IMemoryInterface								normalOffset;
+	private										final	IMemoryInterface								posOffset;
+	@Getter private								final	IMemoryInterface								colorOffset;
+	private										final	IMemoryInterface								uv0Offset;
+	@Getter private								final	IMemoryInterface								uv1Offset;
+	@Getter private								final	IMemoryInterface								uv2Offset;
+	private										final	IMemoryInterface								normalOffset;
 
-	private										int												elementCount;
-	@Getter private								int												meshVertexCount;
-	@Getter private								int												vertexCount;
-	private										long											vertexAddress;
-	private										long											sharingAddress;
-	private										int												activeSharing;
-	private										int												cachedSharing;
-	@Getter private		 						boolean											outdated;
+	private												int												elementCount;
+	@Getter private										int												meshVertexCount;
+	@Getter private										int												vertexCount;
+	private												long											vertexAddress;
+	private												long											sharingAddress;
+	private												int												activeSharing;
+	private												int												cachedSharing;
+	@Getter private		 								boolean											outdated;
 
-	private										Matrix4f										cachedTransform;
-	private										Matrix3f										cachedNormal;
+	private												Matrix4f										cachedTransform;
+	private												Matrix3f										cachedNormal;
 
-	private 							final	Matrix4f										cachedTransformValue;
-	private								final	Matrix3f										cachedNormalValue;
+	private 									final	Matrix4f										cachedTransformValue;
+	private										final	Matrix3f										cachedNormalValue;
 
 	public AcceleratedBufferBuilder(
 			StagingBufferPool		.StagingBuffer	vertexBuffer,
 			StagingBufferPool		.StagingBuffer	varyingBuffer,
 			ElementBufferPool		.ElementSegment	elementSegment,
-			AcceleratedBufferSetPool.BufferSet		bufferSet,
+			AcceleratedRingBuffers	.Buffers		buffer,
 			RenderType								renderType
 	) {
 		this.meshUploaders				= new Reference2ObjectLinkedOpenHashMap<>();
 		this.vertexBuffer				= vertexBuffer;
 		this.varyingBuffer				= varyingBuffer;
 		this.elementSegment				= elementSegment;
-		this.bufferSet					= bufferSet;
+		this.buffer						= buffer;
 
 
 		this.renderType					= renderType;
-		this.layout						= this.bufferSet.getBufferEnvironment()	.getLayout						();
-		this.cullingProgramDispatcher	= this.bufferSet.getBufferEnvironment()	.selectCullingProgramDispatcher	(this.renderType);
+		this.layout						= this.buffer.getBufferEnvironment()	.getLayout						();
+		this.cullingProgramDispatcher	= this.buffer.getBufferEnvironment()	.selectCullingProgramDispatcher	(this.renderType);
 		this.mode						= this.renderType						.mode;
-		this.vertexSize					= this.bufferSet						.getVertexSize					();
+		this.vertexSize					= this.buffer							.getVertexSize					();
 		this.polygonSize				= this.mode								.primitiveLength;
 		this.polygonElementCount		= this.mode								.indexCount						(this.polygonSize);
 
@@ -326,8 +326,8 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 		cachedTransform	= cachedTransformValue	.set			(transform);
 		cachedNormal	= cachedNormalValue		.set			(normal);
 
-		sharingAddress	= bufferSet				.reserveSharing	();
-		cachedSharing	= bufferSet				.getSharing		();
+		sharingAddress	= buffer				.reserveSharing	();
+		cachedSharing	= buffer				.getSharing		();
 		activeSharing	= cachedSharing;
 
 		SHARING_TRANSFORM	.putMatrix4f(sharingAddress, transform);
@@ -351,8 +351,8 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 			int			overlay
 	) {
 		var bufferSize		= vertexSize * size;
-		var vertexAddress	= vertexBuffer	.reserve		(bufferSize);
-		var varyingAddress	= varyingBuffer	.reserve		(VARYING_SIZE * size);
+		var vertexAddress	= vertexBuffer	.reserve(bufferSize);
+		var varyingAddress	= varyingBuffer	.reserve(VARYING_SIZE * size);
 
 		MemoryUtil		.memCopy		(
 				MemoryUtil.memAddress0(meshBuffer),
@@ -360,13 +360,13 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 				bufferSize
 		);
 
-		colorOffset			.putInt(vertexAddress,		FastColor.ABGR32.fromArgb32(color));
-		uv1Offset			.putInt(vertexAddress,		overlay);
-		uv2Offset			.putInt(vertexAddress,		light);
+		colorOffset			.putInt(vertexAddress,	FastColor.ABGR32.fromArgb32(color));
+		uv1Offset			.putInt(vertexAddress,	overlay);
+		uv2Offset			.putInt(vertexAddress,	light);
 
-		VARYING_SHARING		.putInt(varyingAddress,		activeSharing);
-		VARYING_MESH		.putInt(varyingAddress,		-1);
-		VARYING_SHOULD_CULL	.putInt(varyingAddress,		cullingProgramDispatcher.shouldCull() ? 1 : 0);
+		VARYING_SHARING		.putInt(varyingAddress,	activeSharing);
+		VARYING_MESH		.putInt(varyingAddress,	-1);
+		VARYING_SHOULD_CULL	.putInt(varyingAddress,	cullingProgramDispatcher.shouldCull() ? 1 : 0);
 
 		for (var i = 0; i < size; i++) {
 			VARYING_OFFSET
@@ -386,16 +386,16 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 			int			overlay
 	) {
 		if (CoreFeature.shouldUploadMeshImmediately()) {
-			var meshSize		= serverMesh				.size		();
-			var vertexAddress	= vertexBuffer				.reserve	(vertexSize		* meshSize);
-			var varyingAddress	= varyingBuffer				.reserve	(VARYING_SIZE	* meshSize);
+			var meshSize		= serverMesh	.size	();
+			var vertexAddress	= vertexBuffer	.reserve(vertexSize		* meshSize);
+			var varyingAddress	= varyingBuffer	.reserve(VARYING_SIZE	* meshSize);
 
 			colorOffset			.putInt(vertexAddress,	FastColor.ABGR32.fromArgb32(color));
 			uv1Offset			.putInt(vertexAddress,	overlay);
 			uv2Offset			.putInt(vertexAddress,	light);
 
 			VARYING_SHARING		.putInt(varyingAddress,	activeSharing);
-			VARYING_MESH		.putInt(varyingAddress,	(int) serverMesh		.offset		());
+			VARYING_MESH		.putInt(varyingAddress,	serverMesh				.offset		());
 			VARYING_SHOULD_CULL	.putInt(varyingAddress,	cullingProgramDispatcher.shouldCull	() ? 1 : 0);
 
 			for (var i = 0; i < meshSize; i++) {
@@ -404,24 +404,25 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 						.putInt	(varyingAddress, i);
 			}
 
-			elementSegment.countElements(mode.indexCount((int) meshSize));
-			vertexCount += (int) meshSize;
+			elementSegment.countElements(mode.indexCount(meshSize));
+			vertexCount += meshSize;
 
 			return;
 		}
 
-		var meshSize		= (int) serverMesh	.size	();
-		var meshUploader	= meshUploaders		.get	(serverMesh);
-		meshVertexCount		= meshVertexCount + meshSize;
+		var meshSize		= serverMesh	.size	();
+		var meshUploader	= meshUploaders	.get	(serverMesh);
 
 		if (meshUploader == null) {
-			meshUploader = bufferSet.getMeshUploader();
+			meshUploader = buffer	.getMeshUploader();
 			meshUploader			.setServerMesh	(serverMesh);
 			meshUploaders			.put			(serverMesh, meshUploader);
 		}
 
-		elementSegment	.countElements	(mode.indexCount(meshSize));
-		meshUploader	.addUpload		(
+		elementSegment.countElements(mode.indexCount(meshSize));
+		meshVertexCount += meshSize;
+
+		meshUploader.addUpload(
 				color,
 				light,
 				overlay,
@@ -464,11 +465,6 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 	@Override
 	public RenderType getRenderType() {
 		return renderType;
-	}
-
-	@Override
-	public AcceleratedBufferSetPool.BufferSet getBufferSet() {
-		return bufferSet;
 	}
 
 	public int getTotalVertexCount() {

@@ -5,5 +5,5 @@ import net.minecraft.client.renderer.RenderType;
 
 public interface IAcceleratedBufferSource {
 
-	AcceleratedBufferBuilder getBuffer(RenderType renderType);
+	AcceleratedBufferBuilder getBuffer(int layer, RenderType renderType, Runnable before, Runnable after);
 }

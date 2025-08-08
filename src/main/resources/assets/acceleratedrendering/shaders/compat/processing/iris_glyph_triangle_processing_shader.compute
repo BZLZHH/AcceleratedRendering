@@ -18,8 +18,8 @@ struct Vertex {
 
 layout(local_size_x = 128) in;
 
-layout(binding=1, std430) buffer Vertices {
-    Vertex  vertices[];
+layout(binding=1, std430) restrict buffer Vertices {
+    Vertex vertices[];
 };
 
 layout(location=0) uniform uint polygonCount;
