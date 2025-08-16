@@ -3,6 +3,7 @@ package com.github.argon4w.acceleratedrendering.compat.curios.mixins;
 import com.github.argon4w.acceleratedrendering.compat.curios.CuriosCompatFeature;
 import com.github.argon4w.acceleratedrendering.features.entities.AcceleratedEntityRenderingFeature;
 import com.github.argon4w.acceleratedrendering.features.filter.FilterFeature;
+import com.github.argon4w.acceleratedrendering.features.items.AcceleratedItemRenderingFeature;
 import com.github.argon4w.acceleratedrendering.features.text.AcceleratedTextRenderingFeature;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -45,13 +46,14 @@ public class CuriosLayerMixin {
 				&&	!	CuriosCompatFeature.shouldAccelerateCurios	()
 		) {
 			AcceleratedEntityRenderingFeature	.useVanillaPipeline();
+			AcceleratedItemRenderingFeature		.useVanillaPipeline();
 			AcceleratedTextRenderingFeature		.useVanillaPipeline();
 		}
 	}
 
 	@Inject(
 			method	= "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/MultiBufferSource;ILnet/minecraft/world/entity/LivingEntity;FFFFFF)V",
-			at		= @At("TAIL")
+			at		= @At("RETURN")
 	)
 	public void stopRenderCuriosLayer(
 			PoseStack			matrixStack,
@@ -70,13 +72,17 @@ public class CuriosLayerMixin {
 				&&	!	CuriosCompatFeature.shouldAccelerateCurios	()
 		) {
 			AcceleratedEntityRenderingFeature	.resetPipeline();
+			AcceleratedItemRenderingFeature		.resetPipeline();
 			AcceleratedTextRenderingFeature		.resetPipeline();
 		}
 	}
 
 	@WrapOperation(
-			method = "lambda$render$0",
-			at = @At(value = "INVOKE", target = "Ltop/theillusivec4/curios/api/client/ICurioRenderer;render(Lnet/minecraft/world/item/ItemStack;Ltop/theillusivec4/curios/api/SlotContext;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/entity/RenderLayerParent;Lnet/minecraft/client/renderer/MultiBufferSource;IFFFFFF)V")
+			method	= "lambda$render$0",
+			at		= @At(
+					value	= "INVOKE",
+					target	= "Ltop/theillusivec4/curios/api/client/ICurioRenderer;render(Lnet/minecraft/world/item/ItemStack;Ltop/theillusivec4/curios/api/SlotContext;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/entity/RenderLayerParent;Lnet/minecraft/client/renderer/MultiBufferSource;IFFFFFF)V"
+			)
 	)
 	public void filterCuriosItem(
 			ICurioRenderer			instance,
@@ -101,6 +107,7 @@ public class CuriosLayerMixin {
 
 		if (!pass) {
 			AcceleratedEntityRenderingFeature	.useVanillaPipeline();
+			AcceleratedItemRenderingFeature		.useVanillaPipeline();
 			AcceleratedTextRenderingFeature		.useVanillaPipeline();
 		}
 
@@ -122,6 +129,7 @@ public class CuriosLayerMixin {
 
 		if (!pass) {
 			AcceleratedEntityRenderingFeature	.resetPipeline();
+			AcceleratedItemRenderingFeature		.resetPipeline();
 			AcceleratedTextRenderingFeature		.resetPipeline();
 		}
 	}

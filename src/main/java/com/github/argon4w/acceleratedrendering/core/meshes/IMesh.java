@@ -9,7 +9,8 @@ public interface IMesh {
 
 	interface Builder {
 
-		IMesh	build(IMeshCollector collector);
-		void	delete();
+		IMesh	build	(IMeshCollector collector);
+		IMesh	build	(IMeshCollector collector, boolean forceDense);
+		void	delete	();
 	}
 }

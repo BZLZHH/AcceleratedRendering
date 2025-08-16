@@ -1,11 +1,10 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.github.argon4w.acceleratedrendering.features.entities.mixins",
+  "package": "com.github.argon4w.acceleratedrendering.features.entitymodelfeature.mixins",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "EntityRenderDispatcherMixin",
-    "InventoryScreenMixin"
+    "EMFModelPartMixin"
   ],
   "injectors": {
     "defaultRequire": 1

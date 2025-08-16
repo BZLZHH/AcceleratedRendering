@@ -135,11 +135,11 @@ public class GeoBoneMixin implements IAcceleratedRenderer<Void> {
 								position.x,
 								position.y,
 								position.z,
-								color,
+								-1,
 								texCoord[texOrder.x],
 								texCoord[texOrder.y],
 								overlay,
-								light,
+								0,
 								normal.x,
 								normal.y,
 								normal.z

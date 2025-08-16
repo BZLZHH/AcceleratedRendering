@@ -115,7 +115,7 @@ public class AcceleratedRingBuffers extends LoopResetPool<AcceleratedRingBuffers
 			this.functions			= new Int2ReferenceOpenHashMap		<>	();
 			this.bufferEnvironment	= bufferEnvironment;
 
-			this.used = false;
+			this.used				= false;
 		}
 
 		public void reset() {
@@ -126,9 +126,7 @@ public class AcceleratedRingBuffers extends LoopResetPool<AcceleratedRingBuffers
 			sharingBuffer		.reset				();
 			vertexBuffer		.reset				();
 			sharing				.setValue			(0);
-
 			builders			.clear				();
-			layers.clear				();
 		}
 
 		public void bindTransformBuffers() {

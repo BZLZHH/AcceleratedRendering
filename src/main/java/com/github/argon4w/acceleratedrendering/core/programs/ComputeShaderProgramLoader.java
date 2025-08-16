@@ -12,6 +12,7 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.server.packs.resources.SimplePreparableReloadListener;
 import net.minecraft.util.profiling.ProfilerFiller;
 import net.neoforged.fml.ModLoader;
+import org.apache.commons.io.IOUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -21,19 +22,17 @@ public class ComputeShaderProgramLoader extends SimplePreparableReloadListener<M
 	public	static final	ComputeShaderProgramLoader				INSTANCE		= new ComputeShaderProgramLoader();
 	private	static final	Map<ResourceLocation, ComputeProgram>	COMPUTE_SHADERS	= new Object2ObjectOpenHashMap<>();
 	private	static			boolean									LOADED			= false;
-	private	static			boolean									DELETED			= false;
 
 	@Override
-	protected Map<ResourceLocation, ComputeShaderProgramLoader.ShaderSource> prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
+	protected Map<ResourceLocation, ShaderSource> prepare(ResourceManager resourceManager, ProfilerFiller profiler) {
 		try {
-			var builder			= ModLoader.postEventWithReturn(new LoadComputeShaderEvent(ImmutableMap.builder()))	.getShaderLocations	();
-			var shaderSources	= new Object2ObjectOpenHashMap<ResourceLocation, ShaderSource>											();
-			var shaderLocations	= builder																			.build				();
+			var shaderSources	= new Object2ObjectOpenHashMap<ResourceLocation, ShaderSource>		();
+			var shaderLocations	= ModLoader.postEventWithReturn(new LoadComputeShaderEvent()).build	();
 
 			for (ResourceLocation key : shaderLocations.keySet()) {
-				var definition			= shaderLocations	.get(key);
-				var resourceLocation	= definition		.location;
-				var barrierFlags		= definition		.barrierFlags;
+				var definition			= shaderLocations	.get			(key);
+				var resourceLocation	= definition		.location		();
+				var barrierFlags		= definition		.barrierFlags	();
 
 				if (resourceLocation == null) {
 					throw new IllegalStateException("Found empty shader location on: \"" + key + "\"");
@@ -46,7 +45,7 @@ public class ComputeShaderProgramLoader extends SimplePreparableReloadListener<M
 				}
 
 				try (var stream = resource.get().open()) {
-					shaderSources.put(key, new ShaderSource(new String(stream.readAllBytes(), StandardCharsets.UTF_8), barrierFlags));
+					shaderSources.put(key, new ShaderSource(IOUtils.toString(stream, StandardCharsets.UTF_8), barrierFlags));
 				}
 			}
 
@@ -112,19 +111,11 @@ public class ComputeShaderProgramLoader extends SimplePreparableReloadListener<M
 			program.delete();
 		}
 
-		DELETED = true;
+		LOADED	= false;
 	}
 
 	public static boolean isProgramsLoaded() {
 		return LOADED;
-	}
-
-	public static boolean isProgramsDeleted() {
-		return DELETED;
-	}
-
-	public record ShaderDefinition(ResourceLocation location, int barrierFlags) {
-
 	}
 
 	public record ShaderSource(String source, int barrierFlags) {

@@ -4,10 +4,13 @@
   "package": "com.github.argon4w.acceleratedrendering.features.items.mixins",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "AbstractContainerScreenMixin",
+    "GuiGraphicsMixin",
     "BakedModelMixin",
     "BakedQuadMixin",
     "ItemColorsAccessor",
     "ItemRendererMixin",
+    "ScreenMixin",
     "SimpleBakedModelMixin"
   ],
   "injectors": {

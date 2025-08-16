@@ -10,10 +10,10 @@ public class EmptyAcceleratedBufferSources implements IAcceleratedBufferSource {
 
 	@Override
 	public AcceleratedBufferBuilder getBuffer(
-			int			layer,
 			RenderType	renderType,
 			Runnable	before,
-			Runnable	after
+			Runnable	after,
+			int			layer
 	) {
 		return null;
 	}

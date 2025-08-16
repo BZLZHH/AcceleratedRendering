@@ -46,11 +46,18 @@ public class ItemRendererMixin implements IAcceleratedRenderer<AcceleratedItemRe
 		var extension1 = pBuffer.getAccelerated();
 		var extension2 = pModel	.getAccelerated();
 
-		if (			!	CoreFeature						.isRenderingLevel				()
-				||		!	AcceleratedItemRenderingFeature	.isEnabled						()
-				||		!	AcceleratedItemRenderingFeature	.shouldUseAcceleratedPipeline	()
-				||		!	extension1						.isAccelerated					()
-				||	(		CoreFeature						.isRenderingHand				() && !extension2.isAlwaysAccelerated())
+		if (			!		AcceleratedItemRenderingFeature	.isEnabled						()
+				||		!		AcceleratedItemRenderingFeature	.shouldUseAcceleratedPipeline	()
+				||		!		extension1						.isAccelerated					()
+				||	(	!		CoreFeature						.isRenderingLevel				()
+
+				&&		!	(	CoreFeature						.isRenderingHand				()
+				&&			(	extension2						.isAcceleratedInHand			()
+				||				AcceleratedItemRenderingFeature	.shouldAccelerateInHand			()))
+
+				&&		!	(	CoreFeature						.isRenderingGui					()
+				&&			(	extension2						.isAcceleratedInGui				()
+				||				AcceleratedItemRenderingFeature	.shouldAccelerateInGui			())))
 		) {
 			original.call(
 					instance,
@@ -134,8 +141,8 @@ public class ItemRendererMixin implements IAcceleratedRenderer<AcceleratedItemRe
 					source
 			)) {
 				quad
-						.getAccelerated()
-						.renderFast(
+						.getAccelerated	()
+						.renderFast		(
 								transform,
 								normal,
 								extension,

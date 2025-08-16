@@ -1,4 +1,4 @@
-package com.github.argon4w.acceleratedrendering.features.geckolib.mixins;
+package com.github.argon4w.acceleratedrendering.features.entitymodelfeature.mixins;
 
 import com.github.argon4w.acceleratedrendering.core.CoreFeature;
 import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders.VertexConsumerExtension;
@@ -12,34 +12,28 @@ import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import software.bernie.geckolib.cache.object.GeoBone;
-import software.bernie.geckolib.renderer.GeoRenderer;
+import traben.entity_model_features.models.parts.EMFModelPart;
 
 @Pseudo
 @ExtensionMethod(VertexConsumerExtension.class)
-@Mixin			(GeoRenderer			.class)
-public interface GeoRendererMixin {
+@Mixin			(EMFModelPart			.class)
+public class EMFModelPartMixin {
 
-	@SuppressWarnings("unchecked")
-	@Inject(
-			method		= "renderCubesOfBone",
-			cancellable	= true,
-			at			= @At(
-					value	= "INVOKE",
-					target	= "Lsoftware/bernie/geckolib/cache/object/GeoBone;getCubes()Ljava/util/List;",
-					shift	= At.Shift.BEFORE
-			)
+	@SuppressWarnings	("unchecked")
+	@Inject				(
+			method		= "compile",
+			at			= @At("HEAD"),
+			cancellable	= true
 	)
-	default void renderCubesOfBoneFast(
-			PoseStack		poseStack,
-			GeoBone			bone,
-			VertexConsumer	buffer,
-			int				packedLight,
-			int				packedOverlay,
-			int				colour,
-			CallbackInfo		ci
+	public void compileFast(
+			PoseStack.Pose	pPose,
+			VertexConsumer pBuffer,
+			int				pPackedLight,
+			int				pPackedOverlay,
+			int				pColor,
+			CallbackInfo ci
 	) {
-		var extension = buffer.getAccelerated();
+		var extension = pBuffer.getAccelerated();
 
 		if (			AcceleratedEntityRenderingFeature	.isEnabled						()
 				&&		AcceleratedEntityRenderingFeature	.shouldUseAcceleratedPipeline	()
@@ -48,18 +42,17 @@ public interface GeoRendererMixin {
 				||	(	CoreFeature							.isRenderingGui					()
 				&&		AcceleratedEntityRenderingFeature	.shouldAccelerateInGui			()))
 		) {
-			var pose = poseStack.last();
-
 			ci			.cancel		();
 			extension	.doRender	(
-					(IAcceleratedRenderer<Void>) bone,
+					(IAcceleratedRenderer<Void>) this,
 					null,
-					pose.pose	(),
-					pose.normal	(),
-					packedLight,
-					packedOverlay,
-					colour
+					pPose.pose	(),
+					pPose.normal(),
+					pPackedLight,
+					pPackedOverlay,
+					pColor
 			);
 		}
 	}
+
 }

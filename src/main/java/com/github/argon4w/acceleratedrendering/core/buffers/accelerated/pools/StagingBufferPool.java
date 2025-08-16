@@ -26,8 +26,7 @@ public class StagingBufferPool extends SimpleResetPool<StagingBufferPool.Staging
 	}
 
 	public void prepare() {
-		bufferOut		.resizeTo(bufferOutSize.getValue());
-		bufferSegments	.setValue(0L);
+		bufferOut.resizeTo(bufferOutSize.getValue());
 	}
 
 	@Override
@@ -39,6 +38,7 @@ public class StagingBufferPool extends SimpleResetPool<StagingBufferPool.Staging
 	@Override
 	public void reset() {
 		bufferOutUsedSize	.setValue	(0L);
+		bufferSegments		.setValue	(0L);
 		super				.reset		();
 	}
 
@@ -96,8 +96,8 @@ public class StagingBufferPool extends SimpleResetPool<StagingBufferPool.Staging
 			super.reset();
 		}
 
-		public void allocateOffset(long additional) {
-			offset = bufferSegments.getAndAdd(position + additional);
+		public void allocateOffset() {
+			offset = bufferSegments.getAndAdd(position);
 		}
 	}
 }

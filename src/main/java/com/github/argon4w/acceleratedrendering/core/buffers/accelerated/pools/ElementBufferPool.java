@@ -26,13 +26,13 @@ public class ElementBufferPool extends SimpleResetPool<ElementBufferPool.Element
 	}
 
 	public void prepare() {
-		elementBufferOut		.resizeTo(elementBufferOutSize.getValue());
-		elementBufferSegments	.setValue(0L);
+		elementBufferOut.resizeTo(elementBufferOutSize.getValue());
 	}
 
 	@Override
 	public void reset() {
 		elementBufferOutUsedSize.setValue	(0L);
+		elementBufferSegments	.setValue	(0L);
 		super					.reset		();
 	}
 

@@ -44,7 +44,7 @@ public class LevelRendererMixin {
 
 	@Inject(
 			method	= "renderLevel",
-			at		= @At("TAIL")
+			at		= @At("RETURN")
 	)
 	public void stopRenderLevel(
 			DeltaTracker	deltaTracker,

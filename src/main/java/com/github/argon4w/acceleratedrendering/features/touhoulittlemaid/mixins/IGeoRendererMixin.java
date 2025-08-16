@@ -43,10 +43,12 @@ public interface IGeoRendererMixin {
 	) {
 		var extension = buffer.getAccelerated();
 
-		if (		CoreFeature							.isRenderingLevel				()
-				&&	AcceleratedEntityRenderingFeature	.isEnabled						()
-				&&	AcceleratedEntityRenderingFeature	.shouldUseAcceleratedPipeline	()
-				&&	extension							.isAccelerated					()
+		if (			AcceleratedEntityRenderingFeature	.isEnabled						()
+				&&		AcceleratedEntityRenderingFeature	.shouldUseAcceleratedPipeline	()
+				&&		extension							.isAccelerated					()
+				&&	(	CoreFeature							.isRenderingLevel				()
+				||	(	CoreFeature							.isRenderingGui					()
+				&&		AcceleratedEntityRenderingFeature	.shouldAccelerateInGui			()))
 		) {
 			var pose = poseStack.last();
 

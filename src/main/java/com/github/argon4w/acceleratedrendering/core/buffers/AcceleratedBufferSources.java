@@ -34,10 +34,10 @@ public class AcceleratedBufferSources implements IAcceleratedBufferSource {
 
 	@Override
 	public AcceleratedBufferBuilder getBuffer(
-			int			layer,
 			RenderType	renderType,
 			Runnable	before,
-			Runnable	after
+			Runnable	after,
+			int			layer
 	) {
 		if (			renderType		!= null
 				&& (	CoreFeature		.shouldForceAccelerateTranslucent	() || canSort || !renderType.sortOnUpload)
@@ -48,10 +48,10 @@ public class AcceleratedBufferSources implements IAcceleratedBufferSource {
 			return sources
 					.get		(renderType.format)
 					.getBuffer	(
-							layer,
 							renderType,
 							before,
-							after
+							after,
+							layer
 					);
 		}
 

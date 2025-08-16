@@ -2,6 +2,7 @@ package com.github.argon4w.acceleratedrendering.features.filter.mixins;
 
 import com.github.argon4w.acceleratedrendering.features.entities.AcceleratedEntityRenderingFeature;
 import com.github.argon4w.acceleratedrendering.features.filter.FilterFeature;
+import com.github.argon4w.acceleratedrendering.features.items.AcceleratedItemRenderingFeature;
 import com.github.argon4w.acceleratedrendering.features.text.AcceleratedTextRenderingFeature;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -39,6 +40,7 @@ public class LevelRendererMixin {
 
 		if (!pass) {
 			AcceleratedEntityRenderingFeature	.useVanillaPipeline();
+			AcceleratedItemRenderingFeature		.useVanillaPipeline();
 			AcceleratedTextRenderingFeature		.useVanillaPipeline();
 		}
 
@@ -55,6 +57,7 @@ public class LevelRendererMixin {
 
 		if (!pass) {
 			AcceleratedEntityRenderingFeature	.resetPipeline();
+			AcceleratedItemRenderingFeature		.resetPipeline();
 			AcceleratedTextRenderingFeature		.resetPipeline();
 		}
 	}

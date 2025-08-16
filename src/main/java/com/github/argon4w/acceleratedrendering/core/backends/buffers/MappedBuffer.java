@@ -9,6 +9,7 @@ public class MappedBuffer extends MutableBuffer implements IClientBuffer {
 
 	protected long address;
 	protected long position;
+	protected long current;
 
 	public MappedBuffer(long initialSize) {
 		super(initialSize,	GL_MAP_PERSISTENT_BIT
@@ -17,6 +18,7 @@ public class MappedBuffer extends MutableBuffer implements IClientBuffer {
 
 		this.address	= map();
 		this.position	= 0L;
+		this.current	= 0L;
 	}
 
 	@Override
@@ -29,7 +31,8 @@ public class MappedBuffer extends MutableBuffer implements IClientBuffer {
 		var newPosition = oldPosition + bytes;
 
 		if (occupied) {
-			this.position = newPosition;
+			this.current	= oldPosition;
+			this.position	= newPosition;
 		}
 
 		if (newPosition <= size) {
@@ -62,6 +65,10 @@ public class MappedBuffer extends MutableBuffer implements IClientBuffer {
 
 	public void reset() {
 		position = 0;
+	}
+
+	public long getCurrent() {
+		return address + current;
 	}
 
 	public long map() {

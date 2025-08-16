@@ -12,53 +12,60 @@ import java.util.List;
 
 public class FeatureConfig {
 
-	public static final	FeatureConfig										CONFIG;
-	public static final	ModConfigSpec										SPEC;
+	public static	final	FeatureConfig										CONFIG;
+	public static	final	ModConfigSpec										SPEC;
 
-	public final		ModConfigSpec.IntValue								corePooledBufferSetSize;
-	public final		ModConfigSpec.IntValue								corePooledElementBufferSize;
-	public final		ModConfigSpec.IntValue								coreCachedImageSize;
-	public final		ModConfigSpec.ConfigValue<FeatureStatus>			coreDebugContextEnabled;
-	public final		ModConfigSpec.ConfigValue<FeatureStatus>			coreForceTranslucentAcceleration;
-	public final		ModConfigSpec.ConfigValue<FeatureStatus>			coreCacheIdenticalPose;
-	public final		ModConfigSpec.ConfigValue<MeshInfoCacheType>		coreMeshInfoCacheType;
-	public final		ModConfigSpec.ConfigValue<FeatureStatus>			coreUploadMeshImmediately;
+	public			final	ModConfigSpec.IntValue								corePooledBufferSetSize;
+	public			final	ModConfigSpec.IntValue								corePooledElementBufferSize;
+	public			final	ModConfigSpec.IntValue								coreCachedImageSize;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			coreDebugContextEnabled;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			coreForceTranslucentAcceleration;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			coreCacheIdenticalPose;
+	public			final	ModConfigSpec.ConfigValue<MeshInfoCacheType>		coreMeshInfoCacheType;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			coreUploadMeshImmediately;
 
-	public final		ModConfigSpec.ConfigValue<FeatureStatus>			acceleratedEntityRenderingFeatureStatus;
-	public final		ModConfigSpec.ConfigValue<PipelineSetting>			acceleratedEntityRenderingDefaultPipeline;
-	public final		ModConfigSpec.ConfigValue<MeshType>					acceleratedEntityRenderingMeshType;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			acceleratedEntityRenderingFeatureStatus;
+	public			final	ModConfigSpec.ConfigValue<PipelineSetting>			acceleratedEntityRenderingDefaultPipeline;
+	public			final	ModConfigSpec.ConfigValue<MeshType>					acceleratedEntityRenderingMeshType;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			acceleratedEntityRenderingGuiAcceleration;
 
-	public final		ModConfigSpec.ConfigValue<FeatureStatus>			acceleratedTextRenderingFeatureStatus;
-	public final		ModConfigSpec.ConfigValue<PipelineSetting>			acceleratedTextRenderingDefaultPipeline;
-	public final		ModConfigSpec.ConfigValue<MeshType>					acceleratedTextRenderingMeshType;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			acceleratedTextRenderingFeatureStatus;
+	public			final	ModConfigSpec.ConfigValue<PipelineSetting>			acceleratedTextRenderingDefaultPipeline;
+	public			final	ModConfigSpec.ConfigValue<MeshType>					acceleratedTextRenderingMeshType;
 
-	public final		ModConfigSpec.ConfigValue<FeatureStatus>			acceleratedItemRenderingFeatureStatus;
-	public final		ModConfigSpec.ConfigValue<FeatureStatus>			acceleratedItemRenderingBakeMeshForQuads;
-	public final		ModConfigSpec.ConfigValue<PipelineSetting>			acceleratedItemRenderingDefaultPipeline;
-	public final		ModConfigSpec.ConfigValue<MeshType>					acceleratedItemRenderingMeshType;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			acceleratedItemRenderingFeatureStatus;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			acceleratedItemRenderingBakeMeshForQuads;
+	public			final	ModConfigSpec.ConfigValue<PipelineSetting>			acceleratedItemRenderingDefaultPipeline;
+	public			final	ModConfigSpec.ConfigValue<MeshType>					acceleratedItemRenderingMeshType;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			acceleratedItemRenderingHandAcceleration;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			acceleratedItemRenderingGuiAcceleration;
+	public 			final	ModConfigSpec.ConfigValue<FeatureStatus>			acceleratedItemRenderingGuiItemBatching;
 
-	public final		ModConfigSpec.ConfigValue<FeatureStatus>			orientationCullingFeatureStatus;
-	public final		ModConfigSpec.ConfigValue<FeatureStatus>			orientationCullingDefaultCulling;
-	public final		ModConfigSpec.ConfigValue<FeatureStatus>			orientationCullingIgnoreCullState;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			orientationCullingFeatureStatus;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			orientationCullingDefaultCulling;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			orientationCullingIgnoreCullState;
 
-	public final		ModConfigSpec.ConfigValue<FeatureStatus>			filterFeatureStatus;
-	public final		ModConfigSpec.ConfigValue<FeatureStatus>			filterEntityFilter;
-	public final		ModConfigSpec.ConfigValue<FeatureStatus>			filterBlockEntityFilter;
-	public final		ModConfigSpec.ConfigValue<FilterType>				filterEntityFilterType;
-	public final		ModConfigSpec.ConfigValue<FilterType>				filterBlockEntityFilterType;
-	public final		ModConfigSpec.ConfigValue<List<? extends String>>	filterEntityFilterValues;
-	public final		ModConfigSpec.ConfigValue<List<? extends String>>	filterBlockEntityFilterValues;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			filterFeatureStatus;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			filterEntityFilter;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			filterBlockEntityFilter;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			filterItemFilter;
+	public			final	ModConfigSpec.ConfigValue<FilterType>				filterEntityFilterType;
+	public			final	ModConfigSpec.ConfigValue<FilterType>				filterBlockEntityFilterType;
+	public			final	ModConfigSpec.ConfigValue<FilterType>				filterItemFilterType;
+	public			final	ModConfigSpec.ConfigValue<List<? extends String>>	filterEntityFilterValues;
+	public			final	ModConfigSpec.ConfigValue<List<? extends String>>	filterBlockEntityFilterValues;
+	public			final	ModConfigSpec.ConfigValue<List<? extends String>>	filterItemFilterValues;
 
-	public final		ModConfigSpec.ConfigValue<FeatureStatus>			irisCompatFeatureStatus;
-	public final		ModConfigSpec.ConfigValue<FeatureStatus>			irisCompatOrientationCullingCompat;
-	public final		ModConfigSpec.ConfigValue<FeatureStatus>			irisCompatShadowCulling;
-	public final		ModConfigSpec.ConfigValue<FeatureStatus>			irisCompatPolygonProcessing;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			irisCompatFeatureStatus;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			irisCompatOrientationCullingCompat;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			irisCompatShadowCulling;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			irisCompatPolygonProcessing;
 
-	public final		ModConfigSpec.ConfigValue<FeatureStatus>			curiosCompatFeatureStatus;
-	public final		ModConfigSpec.ConfigValue<FeatureStatus>			curiosCompatLayerAcceleration;
-	public final		ModConfigSpec.ConfigValue<FeatureStatus>			curiosItemFilter;
-	public final		ModConfigSpec.ConfigValue<FilterType>				curiosItemFilterType;
-	public final		ModConfigSpec.ConfigValue<List<? extends String>>	curiosItemFilterValues;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			curiosCompatFeatureStatus;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			curiosCompatLayerAcceleration;
+	public			final	ModConfigSpec.ConfigValue<FeatureStatus>			curiosItemFilter;
+	public			final	ModConfigSpec.ConfigValue<FilterType>				curiosItemFilterType;
+	public			final	ModConfigSpec.ConfigValue<List<? extends String>>	curiosItemFilterValues;
 
 	static {
 		Pair<FeatureConfig, ModConfigSpec> pair	= new ModConfigSpec.Builder()	.configure	(FeatureConfig::new);
@@ -130,7 +137,7 @@ public class FeatureConfig {
 
 		builder
 				.comment				("Accelerated Entity Rendering Settings")
-				.comment				("Accelerated Entity Rendering uses GPU to cache and transform vertices while rendering model parts of entities, instead of generating and transforming vertices every time the model parts are rendered in CPU.")
+				.comment				("Accelerated Entity Rendering uses GPU to cache and transform vertices while rendering entities, instead of generating and transforming vertices every time the entities are rendered in CPU.")
 				.translation			("acceleratedrendering.configuration.accelerated_entity_rendering")
 				.push					("accelerated_entity_rendering");
 
@@ -152,6 +159,12 @@ public class FeatureConfig {
 				.comment				("- SERVER: Cached mesh will be stored on the server side (GPU), which may speed up rendering but will use more VRAM to store the mesh.")
 				.translation			("acceleratedrendering.configuration.accelerated_entity_rendering.mesh_type")
 				.defineEnum				("mesh_type",							MeshType.SERVER);
+
+		acceleratedEntityRenderingGuiAcceleration		= builder
+				.comment				("- DISABLED: Accelerated Rendering will not accelerate entities when rendering it in a GUI unless mods explicitly enable it temporarily when rendering their own entities.")
+				.comment				("- ENABLED: Accelerated Rendering will still accelerate entities when rendering it in a GUI unless mods explicitly disable it temporarily when rendering their own entities.")
+				.translation			("acceleratedrendering.configuration.accelerated_entity_rendering.gui_acceleration")
+				.defineEnum				("gui_acceleration",						FeatureStatus.ENABLED);
 
 		builder.pop();
 
@@ -185,6 +198,24 @@ public class FeatureConfig {
 				.comment				("- SERVER: Cached mesh will be stored on the server side (GPU), which may speed up rendering but will use more VRAM to store the mesh.")
 				.translation			("acceleratedrendering.configuration.accelerated_item_rendering.mesh_type")
 				.defineEnum				("mesh_type",							MeshType.SERVER);
+
+		acceleratedItemRenderingHandAcceleration		= builder
+				.comment				("- DISABLED: Accelerated Rendering will not accelerate item models that are marked as \"too small to make up the cost of acceleration\" when rendering it in hand unless mods explicitly enable it temporarily when rendering their own item models.")
+				.comment				("- ENABLED: Accelerated Rendering will still accelerate item models that are marked as \"too small to make up the cost of acceleration\" when rendering it in hand unless mods explicitly disable it temporarily when rendering their own item models, which may slightly reduce the FPS but accelerate vanilla-like modded item models with large amount of vertices.")
+				.translation			("acceleratedrendering.configuration.accelerated_item_rendering.hand_acceleration")
+				.defineEnum				("hand_acceleration",					FeatureStatus.DISABLED);
+
+		acceleratedItemRenderingGuiAcceleration			= builder
+				.comment				("- DISABLED: Accelerated Rendering will not accelerate item models that are marked as \"too small to make up the cost of acceleration\" when rendering it in a container GUI unless mods explicitly enable it temporarily when rendering their own item models.")
+				.comment				("- ENABLED: Accelerated Rendering will still accelerate item models that are marked as \"too small to make up the cost of acceleration\" when rendering it in a container GUI unless mods explicitly disable it temporarily when rendering their own item models, which may slightly reduce the FPS but accelerate vanilla-like modded item models with large amount of vertices.")
+				.translation			("acceleratedrendering.configuration.accelerated_item_rendering.gui_acceleration")
+				.defineEnum				("gui_acceleration",					FeatureStatus.DISABLED);
+
+		acceleratedItemRenderingGuiItemBatching			= builder
+				.comment				("- DISABLED: Items in the container GUI will be rendered as per item per batch if the GUI Acceleration is enabled, which is inefficient and may cause slight reduction in FPS, but it has better compatibility in modded container GUI.")
+				.comment				("- ENABLED: Items in the container will be rendered together in a single batch if the GUI Acceleration is enabled, which is much more efficient but has little compatibility in modded container GUI.")
+				.translation			("acceleratedrendering.configuration.accelerated_item_rendering.gui_item_batching")
+				.defineEnum				("gui_item_batching",					FeatureStatus.ENABLED);
 
 		builder.pop();
 
@@ -243,13 +274,13 @@ public class FeatureConfig {
 
 		builder
 				.comment				("Filters Settings")
-				.comment				("Filters allows you to prevent specific entities/block entities from being accelerated when rendering for better compatibility.")
+				.comment				("Filters allows you to prevent specific entities/block entities/items from being accelerated when rendering for better compatibility.")
 				.translation			("acceleratedrendering.configuration.filter")
 				.push					("filter");
 
 		filterFeatureStatus								= builder
-				.comment				("- DISABLED: Filters will be disabled and all entities and block entities will be accelerated when rendering.")
-				.comment				("- ENABLED: Filters will test if the entities and block block entities should be accelerated when rendering based on the filter values and the filter type.")
+				.comment				("- DISABLED: Filters will be disabled and all entities, block entities and items will be accelerated when rendering.")
+				.comment				("- ENABLED: Filters will test if the entities, block entities and items should be accelerated when rendering based on the filter values and the filter type.")
 				.translation			("acceleratedrendering.configuration.filter.feature_status")
 				.defineEnum				("feature_status",						FeatureStatus.DISABLED);
 
@@ -265,6 +296,12 @@ public class FeatureConfig {
 				.translation			("acceleratedrendering.configuration.filter.block_entity_filter")
 				.defineEnum				("block_entity_filter",					FeatureStatus.DISABLED);
 
+		filterItemFilter								= builder
+				.comment				("- DISABLED: Item filter will be disabled and all items will be accelerated.")
+				.comment				("- ENABLED: Item filter will test if the items should be accelerated when rendering based on the filter values and the filter type.")
+				.translation			("acceleratedrendering.configuration.filter.item_filter")
+				.defineEnum				("item_filter",							FeatureStatus.DISABLED);
+
 		filterEntityFilterType							= builder
 				.comment				("- BLACKLIST: Entities that are not in the filter values can pass the filter and be accelerated when rendering.")
 				.comment				("- WHITELIST: Entities that are in the filter values can pass the filter and be accelerated when rendering.")
@@ -277,19 +314,32 @@ public class FeatureConfig {
 				.translation			("acceleratedrendering.configuration.filter.block_entity_filter_type")
 				.defineEnum				("block_entity_filter_type",			FilterType.BLACKLIST);
 
+		filterItemFilterType							= builder
+				.comment				("- BLACKLIST: Items that are not in the filter values can pass the filter and be accelerated when rendering.")
+				.comment				("- WHITELIST: Items that are in the filter values can pass the filter and be accelerated when rendering.")
+				.translation			("acceleratedrendering.configuration.filter.item_filter_type")
+				.defineEnum				("item_filter_type",					FilterType.BLACKLIST);
+
 		filterEntityFilterValues						= builder
-				.comment				("The configurable filter values of the entity filter.")
-				.comment				("Changing this will affect the entity filter.")
+				.comment				("You can configure the entity filter by this list.")
+				.comment				("Entity filter will use this list and the filter type to determine if a entity can pass the filter.")
 				.translation			("acceleratedrendering.configuration.filter.entity_filter_values")
 				.gameRestart			()
 				.defineListAllowEmpty	("entity_filter_values",				new ArrayList<>(), () -> "minecraft:empty", object -> object instanceof String string && ResourceLocation.tryParse(string) != null);
 
 		filterBlockEntityFilterValues					= builder
-				.comment				("The configurable filter values of the block entity filter.")
-				.comment				("Changing this will affect the block entity filter.")
+				.comment				("You can configure the block entity filter by this list.")
+				.comment				("Block entity filter will use this list and the filter type to determine if a block entity can pass the filter.")
 				.translation			("acceleratedrendering.configuration.filter.block_entity_filter_values")
 				.gameRestart			()
 				.defineListAllowEmpty	("block_entity_filter_values",			new ArrayList<>(), () -> "minecraft:empty", object -> object instanceof String string && ResourceLocation.tryParse(string) != null);
+
+		filterItemFilterValues							= builder
+				.comment				("You can configure the item filter by this list.")
+				.comment				("Item filter will use this list and the filter type to determine if an item can pass the filter.")
+				.translation			("acceleratedrendering.configuration.filter.item_filter_values")
+				.gameRestart			()
+				.defineListAllowEmpty	("item_filter_values",					new ArrayList<>(), () -> "minecraft:empty", object -> object instanceof String string && ResourceLocation.tryParse(string) != null);
 
 		builder.pop();
 
@@ -356,11 +406,11 @@ public class FeatureConfig {
 				.defineEnum				("item_filter_type",					FilterType.BLACKLIST);
 
 		curiosItemFilterValues							= builder
-				.comment				("The configurable filter values of the curios item filter.")
-				.comment				("Changing this will affect the curios item filter.")
+				.comment				("You can configure the curios item filter by this list.")
+				.comment				("Curios item filter will use this list and the filter type to determine if a curios item can pass the filter.")
 				.translation			("acceleratedrendering.configuration.curios_compatibility.item_filter_values")
 				.gameRestart			()
-				.defineListAllowEmpty	("item_filter_values",			new ArrayList<>(), () -> "minecraft:air", object -> object instanceof String string && ResourceLocation.tryParse(string) != null);
+				.defineListAllowEmpty	("item_filter_values",					new ArrayList<>(), () -> "minecraft:air", object -> object instanceof String string && ResourceLocation.tryParse(string) != null);
 
 		builder.pop();
 	}

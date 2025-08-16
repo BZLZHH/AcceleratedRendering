@@ -83,11 +83,11 @@ public class GeoBoneMixin implements IAcceleratedRenderer<Void> {
 								vertexPosition	.x,
 								vertexPosition	.y,
 								vertexPosition	.z,
-								color,
+								-1,
 								vertex			.texU(),
 								vertex			.texV(),
 								overlay,
-								light,
+								0,
 								polygonNormal	.x,
 								polygonNormal	.y,
 								polygonNormal	.z

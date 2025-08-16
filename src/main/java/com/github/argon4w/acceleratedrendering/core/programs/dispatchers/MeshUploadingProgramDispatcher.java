@@ -56,23 +56,26 @@ public class MeshUploadingProgramDispatcher {
 			var vertexSize		= builder	.getVertexSize		();
 			var meshVertexCount = builder	.getMeshVertexCount	();
 
-			vertexBuffer					.allocateOffset		(meshVertexCount * vertexSize);
-			varyingBuffer					.allocateOffset		(meshVertexCount * AcceleratedBufferBuilder.VARYING_SIZE);
+			vertexBuffer					.reserve			(meshVertexCount * vertexSize);
+			varyingBuffer					.reserve			(meshVertexCount * AcceleratedBufferBuilder.VARYING_SIZE);
+			vertexBuffer					.allocateOffset		();
+			varyingBuffer					.allocateOffset		();
 		}
 
 		buffer.prepare				();
-		buffer.bindTransformBuffers();
+		buffer.bindTransformBuffers	();
 
 		for (var builder : builders) {
-			var vertexBuffer	= builder	.getVertexBuffer	();
-			var varyingBuffer	= builder	.getVaryingBuffer	();
-			var vertexSize		= builder	.getVertexSize		();
 			var offset			= 0;
 			var sparseStart		= 0;
+
+			var vertexBuffer	= builder		.getVertexBuffer	();
+			var varyingBuffer	= builder		.getVaryingBuffer	();
+			var vertexSize		= builder		.getVertexSize		();
 			var vertexCount		= builder		.getVertexCount		();
-			var meshVertexCount	= builder		.getMeshVertexCount	();
-			var vertexAddress	= vertexBuffer	.reserve			(meshVertexCount * vertexSize);
-			var varyingAddress	= varyingBuffer	.reserve			(meshVertexCount * AcceleratedBufferBuilder.VARYING_SIZE);
+
+			var vertexAddress	= vertexBuffer	.getCurrent			();
+			var varyingAddress	= varyingBuffer	.getCurrent			();
 			var vertexOffset	= vertexBuffer	.getOffset			() / vertexSize;
 			var varyingOffset	= varyingBuffer	.getOffset			() / AcceleratedBufferBuilder.VARYING_SIZE;
 
@@ -80,11 +83,12 @@ public class MeshUploadingProgramDispatcher {
 					.getMeshUploaders	()
 					.values				()
 			) {
-				var serverMesh		= uploader					.getServerMesh	();
-				var meshCount		= uploader.getMeshInfos()	.getMeshCount	();
-				var meshBuffer		= serverMesh				.meshBuffer		();
-				var dense			= denseUploaders			.get			(meshBuffer);
-				var sparse			= sparseUploaders			.get			(meshBuffer);
+				var serverMesh	= uploader					.getServerMesh	();
+				var meshCount	= uploader.getMeshInfos()	.getMeshCount	();
+				var meshDense	= serverMesh				.forceDense		() || meshCount >= 128;
+				var meshBuffer	= serverMesh				.meshBuffer		();
+				var dense		= denseUploaders			.get			(meshBuffer);
+				var sparse		= sparseUploaders			.get			(meshBuffer);
 
 				if (dense == null) {
 					dense	= new ReferenceArrayList<>	();
@@ -93,9 +97,9 @@ public class MeshUploadingProgramDispatcher {
 					sparseUploaders	.put				(meshBuffer, sparse);
 				}
 
-				(meshCount < 128
-						? sparse
-						: dense).add(uploader);
+				(meshDense
+						? dense
+						: sparse).add(uploader);
 			}
 
 			for (		var meshBuffer	: sparseUploaders.keySet()) {
@@ -114,12 +118,12 @@ public class MeshUploadingProgramDispatcher {
 						AcceleratedBufferBuilder.VARYING_MESH		.at(offset).putInt(varyingAddress, mesh				.offset			());
 						AcceleratedBufferBuilder.VARYING_SHOULD_CULL.at(offset).putInt(varyingAddress, meshInfos		.getShouldCull	(i));
 
-						for (var j = 0; j < meshSize; j ++) {
+						for (var offsetValue = 0; offsetValue < meshSize; offsetValue ++) {
 							AcceleratedBufferBuilder
 									.VARYING_OFFSET
 									.at		(offset)
-									.at		(j)
-									.putInt	(varyingAddress, j);
+									.at		(offsetValue)
+									.putInt	(varyingAddress, offsetValue);
 						}
 
 						offset += meshSize;

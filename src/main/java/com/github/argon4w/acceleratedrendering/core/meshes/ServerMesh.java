@@ -9,22 +9,17 @@ import com.github.argon4w.acceleratedrendering.core.buffers.accelerated.builders
 import com.github.argon4w.acceleratedrendering.core.buffers.memory.IMemoryLayout;
 import com.github.argon4w.acceleratedrendering.core.meshes.collectors.IMeshCollector;
 import com.mojang.blaze3d.vertex.VertexFormatElement;
-import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
-import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-import it.unimi.dsi.fastutil.objects.ReferenceArrayList;
-import it.unimi.dsi.fastutil.objects.ReferenceLists;
+import it.unimi.dsi.fastutil.objects.*;
 import net.minecraft.CrashReport;
 import net.minecraft.ReportedException;
-import org.apache.logging.log4j.core.Core;
 import org.lwjgl.system.MemoryUtil;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public record ServerMesh(
 		int				size,
 		long			offset,
+		boolean			forceDense,
 		IServerBuffer	meshBuffer
 ) implements IMesh {
 
@@ -45,13 +40,13 @@ public record ServerMesh(
 
 	public static class Builder implements IMesh.Builder {
 
-		public static final Builder																		INSTANCE;
-		public static final Object2ObjectMap<IMemoryLayout<VertexFormatElement>, List<IServerBuffer>>	BUFFERS;
+		public static final Builder																			INSTANCE;
+		public static final Reference2ObjectMap<IMemoryLayout<VertexFormatElement>, List<IServerBuffer>>	BUFFERS;
 
 		static {
-			INSTANCE	= new Builder					();
-			BUFFERS		= new Object2ObjectOpenHashMap<>();
-			BUFFERS.defaultReturnValue					(ReferenceLists.singleton(EmptyServerBuffer.INSTANCE));
+			INSTANCE	= new Builder						();
+			BUFFERS		= new Reference2ObjectOpenHashMap<>	();
+			BUFFERS.defaultReturnValue						(ReferenceLists.singleton(EmptyServerBuffer.INSTANCE));
 		}
 
 		private Builder() {
@@ -59,7 +54,7 @@ public record ServerMesh(
 		}
 
 		@Override
-		public IMesh build(IMeshCollector collector) {
+		public IMesh build(IMeshCollector collector, boolean forceDense) {
 			var vertexCount = collector.getVertexCount();
 
 			if (vertexCount == 0) {
@@ -110,8 +105,14 @@ public record ServerMesh(
 			return new ServerMesh(
 					vertexCount,
 					position / layout.getSize(),
+					forceDense,
 					meshBuffer
 			);
+		}
+
+		@Override
+		public IMesh build(IMeshCollector collector) {
+			return build(collector, false);
 		}
 
 		@Override

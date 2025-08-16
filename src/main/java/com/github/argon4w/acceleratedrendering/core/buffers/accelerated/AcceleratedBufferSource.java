@@ -47,10 +47,10 @@ public class AcceleratedBufferSource implements IAcceleratedBufferSource {
 
 	@Override
 	public AcceleratedBufferBuilder getBuffer(
-			int			layerIndex,
 			RenderType	renderType,
 			Runnable	before,
-			Runnable	after
+			Runnable	after,
+			int			layerIndex
 	) {
 		var layerKey	= new LayerKey					(layerIndex, renderType);
 		var builders	= currentBuffer	.getBuilders	();
@@ -129,17 +129,16 @@ public class AcceleratedBufferSource implements IAcceleratedBufferSource {
 			environment												.selectTransformProgramDispatcher		().dispatch(builders.values());
 
 			for (var layerKey : builders.keySet()) {
-				var builder			= builders	.get				(layerKey);
-				var elementSegment	= builder	.getElementSegment	();
-				var renderType		= layerKey	.renderType			();
-				var layer			= layerKey	.layer				();
+				var builder = builders.get(layerKey);
 
 				if (builder.isEmpty()) {
 					continue;
 				}
 
-				var mode		= renderType.mode;
-				var drawContext	= buffer	.getDrawContext();
+				var drawContext		= buffer	.getDrawContext		();
+				var elementSegment	= builder	.getElementSegment	();
+				var renderType		= layerKey	.renderType			();
+				var layer			= layerKey	.layer				();
 
 				builder							.setOutdated		();
 				elementSegment					.allocateOffset		();
@@ -148,8 +147,8 @@ public class AcceleratedBufferSource implements IAcceleratedBufferSource {
 				drawContext						.setRenderType		(renderType);
 				buffer.getLayers().get(layer)	.add				(drawContext);
 
-				barrier |= environment	.selectProcessingProgramDispatcher	(mode)	.dispatch(builder);
-				barrier |= builder		.getCullingProgramDispatcher		()		.dispatch(builder);
+				barrier |= environment	.selectProcessingProgramDispatcher	(renderType.mode)	.dispatch(builder);
+				barrier |= builder		.getCullingProgramDispatcher		()					.dispatch(builder);
 			}
 
 			glMemoryBarrier	(barrier);
@@ -175,7 +174,7 @@ public class AcceleratedBufferSource implements IAcceleratedBufferSource {
 					renderType						.setupRenderState	();
 
 					var mode	= renderType	.mode;
-					var shader	= RenderSystem	.getShader	();
+					var shader	= RenderSystem	.getShader();
 
 					shader.setDefaultUniforms(
 							mode,
@@ -202,10 +201,10 @@ public class AcceleratedBufferSource implements IAcceleratedBufferSource {
 			buffer.setInFlight	();
 		}
 
-		used				= false;
-		currentBuffer		= ringBuffers	.get	(false);
-		activeLayers						.clear	();
-		buffers								.clear	();
-		buffers								.add	(currentBuffer);
+		used			= false;
+		currentBuffer	= ringBuffers	.get	(false);
+		activeLayers					.clear	();
+		buffers							.clear	();
+		buffers							.add	(currentBuffer);
 	}
 }

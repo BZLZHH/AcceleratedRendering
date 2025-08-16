@@ -147,6 +147,7 @@ dependencies {
     implementation "maven.modrinth:sodium:mc1.21.1-0.6.13-neoforge"
     implementation "maven.modrinth:iris:1.8.8+1.21.1-neoforge"
 
+    compileOnly "maven.modrinth:entity-model-features:Z0UKemxw"
     compileOnly "maven.modrinth:touhou-little-maid:3XPwCAVd"
     compileOnly "maven.modrinth:geckolib:QEqpUJ1G"
     compileOnly "maven.modrinth:immediatelyfast:1.6.6+1.21.1-neoforge"

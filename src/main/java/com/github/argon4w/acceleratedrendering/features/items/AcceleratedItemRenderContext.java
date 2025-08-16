@@ -11,19 +11,19 @@ import net.minecraft.world.item.ItemStack;
 @Getter
 public class AcceleratedItemRenderContext {
 
-    private final ItemStack itemStack;
-    private final ItemColor itemColor;
-    private final BakedModel bakedModel;
-    private final RandomSource random;
+	private final ItemStack		itemStack;
+	private final ItemColor		itemColor;
+	private final BakedModel	bakedModel;
+	private final RandomSource	random;
 
-    public AcceleratedItemRenderContext(
-            ItemStack itemStack,
-            BakedModel bakedModel,
-            RandomSource random
-    ) {
-        this.itemStack = itemStack;
-        this.itemColor = ((ItemColorsAccessor) Minecraft.getInstance().getItemColors()).getItemColors().getOrDefault(itemStack.getItem(), EmptyItemColor.INSTANCE);
-        this.bakedModel = bakedModel;
-        this.random = random;
-    }
+	public AcceleratedItemRenderContext(
+			ItemStack		itemStack,
+			BakedModel		bakedModel,
+			RandomSource	random
+	) {
+		this.itemStack	= itemStack;
+		this.itemColor	= ((ItemColorsAccessor) Minecraft.getInstance().getItemColors()).getItemColors().getOrDefault(this.itemStack.getItem(), EmptyItemColor.INSTANCE);
+		this.bakedModel	= bakedModel;
+		this.random		= random;
+	}
 }

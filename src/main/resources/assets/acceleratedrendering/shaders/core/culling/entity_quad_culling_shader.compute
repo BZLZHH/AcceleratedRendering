@@ -76,10 +76,11 @@ void main() {
     Vertex  vertex3 = vertices[index3];
     Vertex  vertex4 = vertices[index4];
 
-    vec4    pos1    = projectMatrix * viewMatrix * vec4(vertex1.x, vertex1.y, vertex1.z, 1.0);
-    vec4    pos2    = projectMatrix * viewMatrix * vec4(vertex2.x, vertex2.y, vertex2.z, 1.0);
-    vec4    pos3    = projectMatrix * viewMatrix * vec4(vertex3.x, vertex3.y, vertex3.z, 1.0);
-    vec4    pos4    = projectMatrix * viewMatrix * vec4(vertex4.x, vertex4.y, vertex4.z, 1.0);
+    mat4    matrix  = projectMatrix * viewMatrix;
+    vec4    pos1    = matrix        * vec4(vertex1.x, vertex1.y, vertex1.z, 1.0);
+    vec4    pos2    = matrix        * vec4(vertex2.x, vertex2.y, vertex2.z, 1.0);
+    vec4    pos3    = matrix        * vec4(vertex3.x, vertex3.y, vertex3.z, 1.0);
+    vec4    pos4    = matrix        * vec4(vertex4.x, vertex4.y, vertex4.z, 1.0);
 
     float   det1    = determinant(mat3(pos1.xyw, pos2.xyw, pos3.xyw));
     float   det2    = determinant(mat3(pos3.xyw, pos4.xyw, pos1.xyw));

@@ -147,14 +147,14 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 
 		this.vertexAddress	= vertexAddress;
 
-		posOffset			.putFloat(vertexAddress + 0L,	pX);
-		posOffset			.putFloat(vertexAddress + 4L,	pY);
-		posOffset			.putFloat(vertexAddress + 8L,	pZ);
+		posOffset			.putFloat	(vertexAddress + 0L,	pX);
+		posOffset			.putFloat	(vertexAddress + 4L,	pY);
+		posOffset			.putFloat	(vertexAddress + 8L,	pZ);
 
-		VARYING_OFFSET		.putInt(varyingAddress,			0);
-		VARYING_SHARING		.putInt(varyingAddress,			activeSharing);
-		VARYING_MESH		.putInt(varyingAddress,			-1);
-		VARYING_SHOULD_CULL	.putInt(varyingAddress,			cullingProgramDispatcher.shouldCull() ? 1 : 0);
+		VARYING_OFFSET		.putInt		(varyingAddress,		0);
+		VARYING_SHARING		.putInt		(varyingAddress,		activeSharing);
+		VARYING_MESH		.putInt		(varyingAddress,		-1);
+		VARYING_SHOULD_CULL	.putInt		(varyingAddress,		cullingProgramDispatcher.shouldCull() ? 1 : 0);
 
 		vertexCount		++;
 		elementCount	++;
@@ -301,7 +301,7 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 		VARYING_OFFSET		.putInt		(varyingAddress,		0);
 		VARYING_SHARING		.putInt		(varyingAddress,		activeSharing);
 		VARYING_MESH		.putInt		(varyingAddress,		-1);
-		VARYING_SHOULD_CULL	.putInt(varyingAddress,				cullingProgramDispatcher.shouldCull() ? 1 : 0);
+		VARYING_SHOULD_CULL	.putInt		(varyingAddress,		cullingProgramDispatcher.shouldCull() ? 1 : 0);
 
 		vertexCount		++;
 		elementCount	++;
@@ -354,7 +354,7 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 		var vertexAddress	= vertexBuffer	.reserve(bufferSize);
 		var varyingAddress	= varyingBuffer	.reserve(VARYING_SIZE * size);
 
-		MemoryUtil		.memCopy		(
+		MemoryUtil.memCopy(
 				MemoryUtil.memAddress0(meshBuffer),
 				vertexAddress,
 				bufferSize
@@ -368,10 +368,8 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 		VARYING_MESH		.putInt(varyingAddress,	-1);
 		VARYING_SHOULD_CULL	.putInt(varyingAddress,	cullingProgramDispatcher.shouldCull() ? 1 : 0);
 
-		for (var i = 0; i < size; i++) {
-			VARYING_OFFSET
-					.at		(i)
-					.putInt	(varyingAddress, i);
+		for (var i = 0; i < size; i ++) {
+			VARYING_OFFSET.at(i).putInt(varyingAddress, i);
 		}
 
 		elementSegment.countElements(mode.indexCount(size));
@@ -398,10 +396,8 @@ public class AcceleratedBufferBuilder implements IAcceleratedVertexConsumer, Ver
 			VARYING_MESH		.putInt(varyingAddress,	serverMesh				.offset		());
 			VARYING_SHOULD_CULL	.putInt(varyingAddress,	cullingProgramDispatcher.shouldCull	() ? 1 : 0);
 
-			for (var i = 0; i < meshSize; i++) {
-				VARYING_OFFSET
-						.at		(i)
-						.putInt	(varyingAddress, i);
+			for (var i = 0; i < meshSize; i ++) {
+				VARYING_OFFSET.at(i).putInt(varyingAddress, i);
 			}
 
 			elementSegment.countElements(mode.indexCount(meshSize));

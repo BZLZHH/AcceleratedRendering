@@ -173,7 +173,13 @@ public abstract class SimpleBakedModelMixin implements IAcceleratedBakedModel, I
 
 	@Unique
 	@Override
-	public boolean isAlwaysAccelerated() {
+	public boolean isAcceleratedInHand() {
+		return false;
+	}
+
+	@Unique
+	@Override
+	public boolean isAcceleratedInGui() {
 		return false;
 	}
 

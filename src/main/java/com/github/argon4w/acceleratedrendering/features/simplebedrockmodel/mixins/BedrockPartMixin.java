@@ -62,10 +62,12 @@ public class BedrockPartMixin implements IAcceleratedRenderer<Void> {
 	) {
 		var extension = consumer.getAccelerated();
 
-		if (		CoreFeature							.isRenderingLevel				()
-				&&	AcceleratedEntityRenderingFeature	.isEnabled						()
-				&&	AcceleratedEntityRenderingFeature	.shouldUseAcceleratedPipeline	()
-				&&	extension							.isAccelerated					()
+		if (			AcceleratedEntityRenderingFeature	.isEnabled						()
+				&&		AcceleratedEntityRenderingFeature	.shouldUseAcceleratedPipeline	()
+				&&		extension							.isAccelerated					()
+				&&	(	CoreFeature							.isRenderingLevel				()
+				||	(	CoreFeature							.isRenderingGui					()
+				&&		AcceleratedEntityRenderingFeature	.shouldAccelerateInGui			()))
 		) {
 			ci			.cancel		();
 			extension	.doRender	(

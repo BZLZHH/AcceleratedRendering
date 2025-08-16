@@ -2,18 +2,18 @@ package com.github.argon4w.acceleratedrendering.core.programs;
 
 import com.github.argon4w.acceleratedrendering.core.backends.programs.BarrierFlags;
 import com.google.common.collect.ImmutableMap;
-import lombok.Getter;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.Event;
 import net.neoforged.fml.event.IModBusEvent;
 
-@Getter
+import java.util.Map;
+
 public class LoadComputeShaderEvent extends Event implements IModBusEvent {
 
-	private final ImmutableMap.Builder<ResourceLocation, ComputeShaderProgramLoader.ShaderDefinition> shaderLocations;
+	private final ImmutableMap.Builder<ResourceLocation, ComputeShaderDefinition> shaderLocations;
 
-	public LoadComputeShaderEvent(ImmutableMap.Builder<ResourceLocation, ComputeShaderProgramLoader.ShaderDefinition> builder) {
-		this.shaderLocations = builder;
+	public LoadComputeShaderEvent() {
+		this.shaderLocations = ImmutableMap.builder();
 	}
 
 	public void loadComputeShader(
@@ -21,6 +21,10 @@ public class LoadComputeShaderEvent extends Event implements IModBusEvent {
 			ResourceLocation	location,
 			BarrierFlags...		barrierFlags
 	) {
-		shaderLocations.put(key, new ComputeShaderProgramLoader.ShaderDefinition(location, BarrierFlags.getFlags(barrierFlags)));
+		shaderLocations.put(key, new ComputeShaderDefinition(location, BarrierFlags.getFlags(barrierFlags)));
+	}
+
+	public Map<ResourceLocation, ComputeShaderDefinition> build() {
+		return shaderLocations.build();
 	}
 }

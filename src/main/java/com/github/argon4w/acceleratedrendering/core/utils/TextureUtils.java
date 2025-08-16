@@ -19,13 +19,13 @@ import static org.lwjgl.opengl.GL46.*;
 
 @EventBusSubscriber(
 		modid	= AcceleratedRenderingModEntry	.MOD_ID,
-		bus		= EventBusSubscriber.Bus		.MOD,
+	 	bus		= EventBusSubscriber.Bus		.MOD,
 		value	= Dist							.CLIENT
 )
 public class TextureUtils implements ResourceManagerReloadListener {
 
-	private	static	final TextureUtils													INSTANCE	= new TextureUtils						();
-	private	static	final Object2ObjectLinkedOpenHashMap<ResourceLocation, NativeImage> IMAGE_CACHE	= new Object2ObjectLinkedOpenHashMap<>	();
+	private	static final TextureUtils													INSTANCE	= new TextureUtils						();
+	private	static final Object2ObjectLinkedOpenHashMap<ResourceLocation, NativeImage>	IMAGE_CACHE	= new Object2ObjectLinkedOpenHashMap<>	();
 
 	@Override
 	public void onResourceManagerReload(ResourceManager resourceManager) {

@@ -50,7 +50,7 @@ void main() {
     vec2    uv1             = vec2(vertex1.u0, vertex1.v0);
     vec2    uv2             = vec2(vertex2.u0, vertex2.v0);
     vec2    uv3             = vec2(vertex3.u0, vertex3.v0);
-    vec2    midUV           = (uv1 + uv2 + uv3) / 4;
+    vec2    midUV           = (uv1 + uv2 + uv3) / 3;
 
     vec3    normal          = normalize(cross(pos2 - pos1, pos3 - pos1));
     uint    packedNormal    = packSnorm4x8(vec4(normal, 0.0));
